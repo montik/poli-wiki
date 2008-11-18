@@ -1,4 +1,4 @@
-function main1(){
+/*function main1(){
 
 var req = new XMLHttpRequest();
 req.onreadystatechange = function(){
@@ -16,7 +16,61 @@ req.send(null);
 
 
 
+}*/
+
+/* classe che rappresenta l'oggetto DS
+ * eliminando tutte le informazioni non
+ * necessarie tenendo solo nome,
+ * queryURI e salvaURI
+ */
+
+	function DS(n){
+
+		this.nome = n;
+		this.queryUri;
+		this.salvaUri;
+
+		//this.setNome = function(s){this.nome = s;}
+		this.setQuri = function(s){this.queryUri = s;}
+		this.setSuri = function(s){this.salvaUri = s;}
 }
+
+
+/*miniclasse che rappresenta una coppia layout-skin
+ * con skin non obbligatorio*/
+
+	function LaySkin(n){
+	this.layout = n;
+	this.setSkin(s){this.skin = s;}
+	
+	}
+
+
+/* classe che rappresenta l'oggetto DF,
+ * considera: nome, list-layout (da querare SEMPRE),
+ * dformat che memorizza l'uri per la formattazione di
+ * documenti interi,
+ * fformat che memorizza l'url per la formattazione
+ * di FRAMMENTI di docuento,
+ * stuff che memorizza un oggettino LaySkin.*/
+
+	function DF(n){
+
+		this.nome = n;
+		this.layoutUri;
+		this.dformUri;
+		this.fformUri;
+		this.stuff;
+
+		this.setLayoUri(s){this.layoutUri = s;}
+		this.setDformUri(s){this.dformUri = s;}
+		this.setFformUri(s){this.fformUri = s;}
+		this.setStuff(s){this.stuff = s;}
+
+}	
+
+
+
 
 
 
@@ -161,4 +215,4 @@ req.send(null);
 
 
 	
-	window.onload = main1;
+	window.onload = main;

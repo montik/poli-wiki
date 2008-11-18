@@ -1,3 +1,25 @@
+function main1(){
+
+var req = new XMLHttpRequest();
+req.onreadystatechange = function(){
+
+	if(req.state == 4) {var u = new Util();
+			    var xmldoc = req.textXML;
+			    alert(xmldoc);
+			    }
+
+
+}
+req.open('GET', 'http://ltw0807.web.cs.unibo.it/df/xhtml/catalog.xml', 'true');
+req.send(null);
+
+
+
+
+}
+
+
+
 /* TODO test di FIRST_ORDRED_NODE_TYPE
  * Questa classe fornisce metodi generici
  * per la manipolazione di DOM, nonche'
@@ -18,37 +40,35 @@
  *
  *	todo tipo di ritorno
  */
-	function compose(contextNode, xpathExpr, nodeList, sub)
+	function compose(contextNode, xpathExpr, listaNodi, sub)
 	{
-		debugger;
 		
-		var srad = document.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null); //sotto-radice, ev.nte da sostituire
+		var srad = document.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext(); //sotto-radice, ev.nte da sostituire
 
 
 		if(sub){ //caso di sostituzione
 			
-			if(nodeList.length != 1){
+			if(listaNodi.length != 1){
 			
 				dump("impossibile sostituire un nodo con 2 o piu");
 				return null;
 				
 				
 				}
-			var newNode = nodeList[0];
+			var newNode = listaNodi[0];
 			var padreSrad = srad.parentNode; //fixme caso in cui srad=rad(tutto)
-			    padreSrad.replaceChild(newNode, srad); //aggiungere debug
+			var rplcd = padreSrad.replaceChild(newNode, srad); //aggiungere debug
 
 		
 		}
 
 		else{ //nota: i figli vengono appesi in coda
 
-			for(var i=0; i<nodeList.lentgh; i++){
+			for(var i=0; i<listaNodi.length; i++){
 			
-				var figlio = nodeList[i];
+				var figlio = listaNodi[i];
 				srad.appendChild(figlio);
-				alert("appeso");				
-				
+					
 				}
 			}
 
@@ -67,9 +87,7 @@
  * 		     con solo l'indirizzo del nodo voluto, ossia solo xpath_addr.
  */
 	function getStr(contextNode, xpathExpr) 
-	
-	{
-	
+	{ 
 		var regex = /^string/;
 		
 		if(!regex.exec(xpathExpr)){ //la stringa non e' canonica
@@ -122,13 +140,18 @@
 	function main(){
 
 	var uu = new Util();
-	var H3 = document.createElement('h3');
-	H3.textContent = "sei scemo";
-	debugger;
+	var H3 = document.createElement('h4');
+	var p0 = document.createElement('p');
+	p0.textContent = "questo e p zero";
+
+	var p1 = document.createElement('p');
+	p1.textContent = "questo e p uno";
+
+	H3.appendChild(p0);
+	H3.appendChild(p1);
 	var harry = new Array();
-	harry[0] = "H3";
-	debugger;
-	uu.compose(document.body, "./small", harry, false);
+	harry[0] = H3;
+	uu.compose(document.body, ".", harry, false);
 
 
 //	uu.setStr(document.body, "./p[1]", "Siamo un gruppo di fighi");
@@ -138,16 +161,4 @@
 
 
 	
-	window.onload = main;
-
-
-
-
-
-
-
-
-
-
-
-
+	window.onload = main1;

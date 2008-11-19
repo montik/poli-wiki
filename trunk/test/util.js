@@ -27,10 +27,7 @@ req.send(null);
 	function DS(n){
 
 		this.nome = n;
-		this.queryUri;
-		this.salvaUri;
 
-		//this.setNome = function(s){this.nome = s;}
 		this.setQuri = function(s){this.queryUri = s;}
 		this.setSuri = function(s){this.salvaUri = s;}
 }
@@ -41,7 +38,8 @@ req.send(null);
 
 	function LaySkin(n){
 	this.layout = n;
-	this.setSkin(s){this.skin = s;}
+	
+	this.setSkin = function(s) {this.skin = s;}
 	
 	}
 
@@ -57,15 +55,16 @@ req.send(null);
 	function DF(n){
 
 		this.nome = n;
-		this.layoutUri;
+		
+		/*this.layoutUri;
 		this.dformUri;
 		this.fformUri;
-		this.stuff;
-
-		this.setLayoUri(s){this.layoutUri = s;}
-		this.setDformUri(s){this.dformUri = s;}
-		this.setFformUri(s){this.fformUri = s;}
-		this.setStuff(s){this.stuff = s;}
+		this.stuff;*/
+				
+		this.setLayoUri = function(s) {this.layoutUri = s;}
+		this.setDformUri = function(s) {this.dformUri = s;}
+		this.setFformUri = function(s) {this.fformUri = s;}
+		this.setStuff = function(s) {this.stuff = s;}
 
 }	
 
@@ -78,11 +77,7 @@ req.send(null);
  * Questa classe fornisce metodi generici
  * per la manipolazione di DOM, nonche'
  * getter e setter di stringhe, sempre su DOM.
- *
- */
-
-
-/* Attacca (in testa? in coda?) una NodeList ad un nodo di un albero dato,
+ * Attacca (in testa? in coda?) una NodeList ad un nodo di un albero dato,
  * indirizzato con XPath, eventualmente con sostituzione della (sotto-)radice
  * 
  * SINTASSI: ??? compose(contextNode, xpathExpr, nodeList[, sub])
@@ -171,7 +166,6 @@ req.send(null);
 	function setStr(contextNode, xpathExpr, newVal){
 
 
-//		var node = document.evaluate(xpathExpr, contextNode, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 		var node = document.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null);
 
 		node.iterateNext().textContent = newVal;

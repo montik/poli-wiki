@@ -1,7 +1,5 @@
-#summary One-sentence summary of this page.
-
 = Introduction =
-
+Lista dei "principali" framework js/AJAX
 http://ntt.cc/2008/02/13/the-most-complete-ajax-framework-and-javascript-libraries-list.html
 
 = Details =

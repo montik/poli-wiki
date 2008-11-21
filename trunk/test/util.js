@@ -12,6 +12,7 @@ req.onreadystatechange = function(){
 }
 req.open('GET', 'http://ltw0807.web.cs.unibo.it/df/xhtml/catalog.xml', 'true');
 req.send(null);
+*/
 
 
 
@@ -94,12 +95,12 @@ req.send(null);
 		
 		var srad = document.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext(); //sotto-radice, ev.nte da sostituire
 
-
+	debugger;
 		if(sub){ //caso di sostituzione
 			
 			if(listaNodi.length != 1){
 			
-				dump("impossibile sostituire un nodo con 2 o piu");
+				alert("impossibile sostituire un nodo con 2 o piu");
 				return null;
 				
 				
@@ -195,11 +196,13 @@ req.send(null);
 	var p1 = document.createElement('p');
 	p1.textContent = "questo e p uno";
 
-	H3.appendChild(p0);
-	H3.appendChild(p1);
+	//H3.appendChild(p0);
+	//H3.appendChild(p1);
+
 	var harry = new Array();
-	harry[0] = H3;
-	uu.compose(document.body, ".", harry, false);
+	harry.push(H3);
+	harry.push(p0);
+	uu.compose(document.body, ".", harry, true);
 
 
 //	uu.setStr(document.body, "./p[1]", "Siamo un gruppo di fighi");

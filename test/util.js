@@ -16,6 +16,9 @@ req.send(null);
 
 
 
+<<<<<<< .mine
+/*
+=======
 
 }*/
 
@@ -34,11 +37,11 @@ req.send(null);
 }
 
 
-/*miniclasse che rappresenta una coppia layout-skin
+/*miniclasse che rappresenta una coppia layout-skin FIXME classe quasi deprecata!!!
  * con skin non obbligatorio*/
 
 	function LaySkin(n){
-	this.layout = n;
+	this.layout = n; //vale anche da nome
 	
 	this.setSkin = function(s) {this.skin = s;}
 	
@@ -62,10 +65,11 @@ req.send(null);
 		this.fformUri;
 		this.stuff;*/
 				
-		this.setLayoUri = function(s) {this.layoutUri = s;}
-		this.setDformUri = function(s) {this.dformUri = s;}
-		this.setFformUri = function(s) {this.fformUri = s;}
-		this.setStuff = function(s) {this.stuff = s;}
+		this.setLayoUri = function(s) {this.layoutUri = s;} //uri dov'e' l'elenco dei layouts
+		this.setDformUri = function(s) {this.dformUri = s;} //uri di richiesta formattazione documenti interi
+		this.setFformUri = function(s) {this.fformUri = s;} //uri di richiesta formattazione frammenti
+		this.setSkin = function(s) {this.skin = s;} //lista degli ULTIMI layout+skin implementati
+		this.setLayout = function(s) {this.layout = s;} //lista degli ULTIMI layout+skin implementati
 
 }	
 
@@ -75,10 +79,16 @@ req.send(null);
 
 
 /* TODO test di FIRST_ORDRED_NODE_TYPE
+>>>>>>> .r13
  * Questa classe fornisce metodi generici
  * per la manipolazione di DOM, nonche'
  * getter e setter di stringhe, sempre su DOM.
+<<<<<<< .mine
+ *
  * Attacca (in testa? in coda?) una NodeList ad un nodo di un albero dato,
+=======
+ * Attacca (in testa? in coda?) una NodeList ad un nodo di un albero dato,
+>>>>>>> .r13
  * indirizzato con XPath, eventualmente con sostituzione della (sotto-)radice
  * 
  * SINTASSI: ??? compose(contextNode, xpathExpr, nodeList[, sub])
@@ -205,6 +215,10 @@ req.send(null);
 	uu.compose(document.body, ".", harry, true);
 
 
+<<<<<<< .mine
+}	
+	window.onload = main;
+=======
 //	uu.setStr(document.body, "./p[1]", "Siamo un gruppo di fighi");
 
 //var xxx = uu.getStr(document, "//head/meta/@content");	
@@ -213,3 +227,4 @@ req.send(null);
 
 	
 	window.onload = main;
+>>>>>>> .r13

@@ -1,8 +1,9 @@
 //todo manca una utility che crei l'albero xml
 //da mandare al formatto
-var ar = new AjaxRequest();
-var u = new Util();
-
+//ar = new AjaxRequest();
+culo = 'ciao stronzo';
+//var u = new Util();
+/*
 var acds = {
 
 	
@@ -312,7 +313,7 @@ var acdf = {
 
 
 
-
+*/
 
 
 /*

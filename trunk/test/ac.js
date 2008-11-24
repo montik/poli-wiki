@@ -1,19 +1,19 @@
-//todo manca una utility che crei l'albero xml
-//da mandare al formatto
-//ar = new AjaxRequest();
-culo = 'ciao stronzo';
-//var u = new Util();
-/*
-var acds = {
+var ar = new AjaxRequest();
+var u = new Util();
 
-	
+var acds = {
+			edo: "cosa c'e' che non va?"
+			}
+
+//TODO questa struttura, cosi' com'e' non viene accettata dall'interprete
+		/*	
+var acds = {
 			socket: ar;
 			tools: u;
 			dsCats: new Array("http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml",
 					  "http://ltw0807.web.cs.unibo.it/ds/catalog.xml",
-					  "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml")
+					  "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml");
 			ds: new Array();
-			
 			init: function(){	
 			
 				for(var key in dsCats){
@@ -88,11 +88,12 @@ var acds = {
 				this.socket.post(par);
 			
 			
-			
 			}
 
 } //fine acds
 
+	*/
+/*
 var acdf = {
 
 		
@@ -303,18 +304,7 @@ var acdf = {
 
 
 	} //fine oggetto
-
-
-
-
-
-
-
-
-
-
 */
-
 
 /*
  Data Sources:
@@ -332,4 +322,3 @@ var acdf = {
  - http://ltw0802.web.cs.unibo.it/DF/catalogo.xml
  - mail a umezzogo@cs.unibo.it
  */
-

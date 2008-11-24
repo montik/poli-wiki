@@ -1,0 +1,21 @@
+<HTML>
+<HEAD>
+
+</HEAD>
+
+<BODY>
+
+<!--l'ordine in cui le librerie vengono importate e' significativo
+in questo caso AjaxRequest non vede ac.js, ma ac.js vede AjaxRequest.js -->
+<script type="text/javascript" src="./AjaxRequest.js"></script>
+<script type="text/javascript" src="./util.js"></script>
+<script type="text/javascript" src="./ac.js"></script>
+
+<script type="text/javascript">
+alert (ar);
+debugger;
+</script>
+
+</BODY>
+
+</HTML>

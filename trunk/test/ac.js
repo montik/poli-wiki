@@ -1,46 +1,46 @@
-var ar = new AjaxRequest();
-var u = new Util();
-
+//todo manca una utility che crei l'albero xml
+//da mandare al formatto
+var array1 = new Array();
+var proxy =  "http://stanisci.web.cs.unibo.it/cgi-bin/pps.php5?yws_path="; //attaccarci la query 
 var acds = {
-			edo: "cosa c'e' che non va?"
-			}
+			
 
-//TODO questa struttura, cosi' com'e' non viene accettata dall'interprete
-		/*	
-var acds = {
-			socket: ar;
-			tools: u;
+			hello: function(){alert("hello");},
 			dsCats: new Array("http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml",
 					  "http://ltw0807.web.cs.unibo.it/ds/catalog.xml",
-					  "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml");
-			ds: new Array();
-			init: function(){	
+					  "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml"),
+			ds: [],
 			
-				for(var key in dsCats){
+			init: function(){	
+		var c = new DS("xxx");	
+		this.ds.push(c);
+debugger;
+				for(var key in this.dsCats){
 
-					this.socket.get(
-					'url': sdCats[key];
-					'onSuccess': function(this.socket){ 
-						var domDoc = xml2dom(this.socket.responseXML);//fixme .. 
+				AjaxRequest.get(	
+					{
+					'url': proxy + this.dsCats[key],
+					'onSuccess': function(req){ 
 						//ocho all'import()
-						var name = this.tools.getStr(domDoc, "./globale/nome");
-						var qury = this.tools.getStr(domDoc, "./accesso/queryURI");
-						var sury = this.tools.getStr(domDoc, "./accesso/salvaURI");
-
-								
-						//riempio i campi del key-esimo oggettino DS	
-						this.ds.push(new DS(name));
-						this.ds[key].setQury(qury);
-						this.ds[key].setSury(suri);}) 	//todo si potrebbe aggiungere onError
-								      		// o qualche altra finezza					
-									      } //fine del foreach
-							} //fine della init
+						var name = Util.getStr(req.responseXML, "/catalogo/globale/nome");
+						var qury = Util.getStr(req.responseXML, "string(/catalogo/accesso/*[1])");
+						// la stringa /catalogo/accesso/queryURI non funziona, forse a causa dell'upper case ??
+						var sury = Util.getStr(req.responseXML, "/catalogo/accesso/*[2]");
+						//riempio i campi del key-esimo oggettino DS
+						var pippo = new DS(name);
+debugger;
+						this.ds.push(pippo);
+						this.ds[name].setQury(qury);
+						this.ds[name].setSury(suri);}
+					}) 
+							     } //fine del foreach
+			}, //fine della init
 
 
 			
 			//ritorna un array di dom .. non piu' alberone response
 			// .. andra' maneggiato da qualche altra parte.
-			query: function(qform){var qstring = this.socket.serializeForm(qform);
+			query: function(qform){var qstring = this.AjaxRequest.serializeForm(qform);
 
 								
 					var arrayResp = new Array();
@@ -50,27 +50,28 @@ var acds = {
 							
 							//attenzione alla simultaneita' delle richieste.
 							//potrebbe essere necessario dereferenziare l'oggetto
-							//interno socket.req
-							this.socket.get(
+							//interno AjaxRequest.req
+							this.AjaxRequest.get(
 								
 								{
-									'url': this.ds[key].queryUri + qstring; //FIXME 
+									'url': this.ds[key].queryUri + qstring, //FIXME 
 									
 									
 									//prende ogni responseXML da ogni query e lo infila
 									//nell' array arrayResp.
 									'onSuccess': function(){
 											
-											arrayResp.push(socket.responseXML);
+											arrayResp.push(AjaxRequest.responseXML);
 										
 												
 			
 											}
 										}
 									   ) //fine oggetto parametro della GET
-									} // fine del foreach
+									
+								} // fine del foreach
 				
-					}  //fine della query()  
+					},  //fine della query()  
 			
 
 			//salva schedaXml, che e' una stringa xml, sul data source ds
@@ -81,38 +82,31 @@ var acds = {
 
 				//costruzione dell'oggetto da passare alla post
 				var par = {
-						'uri': uri;
-						'onError': function(){alert("salvataggio non riuscito");}
-						'scheda': encoded;	}
+						'uri': uri,
+						'onError': function(){alert("salvataggio non riuscito");},
+						'scheda': encoded
 						
-				this.socket.post(par);
+							}
+						
+				this.AjaxRequest.post(par);
 			
 			
-			}
+			
+			},
 
 } //fine acds
 
-	*/
-/*
 var acdf = {
 
 		
-		socket: ar;
-		tools: u;
-
 		dfref: new Array(
 					"http://ltw0807.web.cs.unibo.it/df/xhtml/catalog.xml",	
 					"http://ltw0807.web.cs.unibo.it/df/pdf/catalog.xml",
-					"http://ltw0802.web.cs.unibo.it/DF/catalogo.xml");
+					"http://ltw0802.web.cs.unibo.it/DF/catalogo.xml"),
 		
 		
-		
-		
-		
-
-
 		// risma di oggettini DF
-		df: new Array();
+		df: new Array(),
 
 
 		init: function(){
@@ -122,14 +116,14 @@ var acdf = {
 							//parametro per la get()
 							var par = {
 
-									'uri': dfref[key]
+									'uri': dfref[key],
 									'onSuccess': function(){
 										
-										var respDom = socket.responseXML //forse socket.req.responseXML
-										var nome = tools.getStr(respDom, "./global/@name");
-										var llay = tools.getStr(respDom, "./global/@list-layout")
-										var frmtDoc = tools.getStr(respDom, "./format/@document-URI");
-										var frmtFra = tools.getStr(respDom, "./format/@fragment-URI");
+										var respDom = AjaxRequest.responseXML //forse AjaxRequest.req.responseXML
+										var nome = Util.getStr(respDom, "./global/@name");
+										var llay = Util.getStr(respDom, "./global/@list-layout")
+										var frmtDoc = Util.getStr(respDom, "./format/@document-URI");
+										var frmtFra = Util.getStr(respDom, "./format/@fragment-URI");
 									
 										var dfist = new DS(nome);	
 										dfist.setLayoUri(llay);
@@ -147,11 +141,11 @@ var acdf = {
 							
 							
 							
-							} // fine oggetto da passare alla get
+							}; // fine oggetto da passare alla get
 					
 					
 					
-					socket.get(par);
+					AjaxRequest.get(par);
 
 					} //fine for per ogni df
 		
@@ -160,7 +154,7 @@ var acdf = {
 		for(var key in ds) update(key);
 		
 		
-		} // fine init
+		}, // fine init
 
 		// funzione che aggiorna la lista dei layout di un df, TODO chiamare anche in fase di init
 		update: function(dfname){
@@ -172,15 +166,15 @@ var acdf = {
 				
 				
 							
-							'uri': layUpdateUri;
+							'uri': layUpdateUri,
 
 							//setta la lista di skins e la lista di layouts
 							//del DF dfname
 							'onSuccess': function(){
 									
 									//lista di layout
-				var laydomlist = document.evaluate("./elenco_layout/layout", socket.responseXML, null, XPathResult.ANY_TYPE, null);
-				var skidomlist = document.evaluate("./elenco_layout/skin", socket.responseXML, null, XPathResult.ANY_TYPE, null); 
+				var laydomlist = document.evaluate("./elenco_layout/layout", AjaxRequest.responseXML, null, XPathResult.ANY_TYPE, null);
+				var skidomlist = document.evaluate("./elenco_layout/skin", AjaxRequest.responseXML, null, XPathResult.ANY_TYPE, null); 
 							
 							
 							
@@ -190,7 +184,7 @@ var acdf = {
 				var layList = new Array();
 				for(var i=0; i<=laydomlist.length; i++){
 				
-					var str = tools.getStr(laydomlist.iterateNext(), "./@id"); //il primo parametro e' il nodo contesto
+					var str = Util.getStr(laydomlist.iterateNext(), "./@id"); //il primo parametro e' il nodo contesto
 					layList.push(str);
 				
 				}
@@ -200,7 +194,7 @@ var acdf = {
 				var skiList = new Array();
 				for(var i=0; i<=skidomlist.length; i++){
 				
-					var str = tools.getStr(skidomlist.iterateNext(), "./@id"); //il primo parametro e' il nodo contesto
+					var str = Util.getStr(skidomlist.iterateNext(), "./@id"); //il primo parametro e' il nodo contesto
 					skiList.push(str);
 				
 				}
@@ -214,48 +208,52 @@ var acdf = {
 				
 				
 				
-				} // fine costruzione oggetto parametro
+				}; // fine costruzione oggetto parametro
 
-			socket.get(parobj);
+			AjaxRequest.get(parobj);
 		
 		
-		} //fine dichiarazione metodo update
+		},//fine dichiarazione metodo update
 
 		
 		//formatta documento intero, vuole l'xml gia pronto e il nome del df
-		formatFrag(frag, df){
+		formatFrag: function(frag, df){
 		
-		var uri = this.df[df].fformUri;
-		var xml = escape(encodeURIcomponent(frag));
-
-		//creo il parametro per la post()
+			var uri = this.df[df].fformUri;
+			var xml = escape(encodeURIcomponent(frag));
+	
+			//creo il parametro per la post()
 		var parobj = {
 		
-			'uri': uri;
-			'dati': xml;
-			'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!")}}
+			'uri': uri,
+			'dati': xml,
+			'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!");},
 			'onSuccess': function(){alert("modificare dom della pagina");}
+				
+					};
 
-		socket.post(parobj);
+		AjaxRequest.post(parobj);
 
-		}
+		},
 
 
-		formatDoc(doc, df){
+		formatDoc: function(doc, df){
 		
-		var uri = this.df[df].dformUri;
-		var xml = escape(encodeURIcomponent(doc));
+			var uri = this.df[df].dformUri;
+			var xml = escape(encodeURIcomponent(doc));
+	
+			//creo il parametro per la post()
+			var parobj = {
+			
+				'uri': uri,
+				'dati': xml,
+				'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!");},
+				'onSuccess': function(){alert("modifica dom visualizzazione finale");}
+				};
 
-		//creo il parametro per la post()
-		var parobj = {
-		
-			'uri': uri;
-			'dati': xml;
-			'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!")}}
-			'onSuccess': function(){alert("modifica dom visualizzazione finale")}
-		socket.post(parobj);
-
-		}
+			AjaxRequest.post(parobj);
+	
+			},
 		
 		//funzione che costruisce l'intestazione dell'albero formatta.
 		//prende layout ed opz. skin.Ritorna l'abero con l'elemento DATI
@@ -295,7 +293,7 @@ var acdf = {
 			var dati = document.createElement("dati");
 
 			formatta.appendChild(dati);
-		}
+		},
 
 		
 //todo funzione che appende gli elementi che si vogliono formattare
@@ -304,7 +302,7 @@ var acdf = {
 
 
 	} //fine oggetto
-*/
+
 
 /*
  Data Sources:
@@ -322,3 +320,4 @@ var acdf = {
  - http://ltw0802.web.cs.unibo.it/DF/catalogo.xml
  - mail a umezzogo@cs.unibo.it
  */
+

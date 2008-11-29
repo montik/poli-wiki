@@ -115,17 +115,17 @@
 	{ 
 		var regex = /^string/;
 		
-		if(!regex.exec(xpathExpr)){ //la stringa non e' canonica
-		var newxp = "string(" + xpathExpr + ")";
-			}
+//		if(!regex.exec(xpathExpr)){ //la stringa non e' canonica
+//		var newxp = "string(" + xpathExpr + ")";
+//			}
 		
-		else var newxp = xpathExpr;
-		var str = document.evaluate(newxp, contextNode, null, XPathResult.SRING_TYPE, null);
-		return str.stringValue;
-
-
-	
-	
+//		else var newxp = xpathExpr;
+		var newxp = xpathExpr;
+		var str = document.evaluate(newxp, contextNode, null, XPathResult.ANY_TYPE, null);
+		//var str = document.evaluate(newxp, contextNode, null, XPathResult.STRING_TYPE, null);
+//		return str.stringValue;
+		var ciccio =  str.iterateNext().textContent;
+		return ciccio;	
 	
 	}
 

@@ -28,6 +28,7 @@
  */
 function AjaxRequest() {
 	var req = new Object();
+	var pippo = "pluto";
 	
 	// -------------------
 	// Instance properties
@@ -38,7 +39,7 @@ function AjaxRequest() {
 	 * the onTimeout function will be called
 	 */
 	req.timeout = null;
-	
+	                                	
 	/**
 	 *	Since some browsers cache GET requests via XMLHttpRequest, an
 	 * additional parameter called AjaxRequestUniqueId will be added to
@@ -194,6 +195,7 @@ function AjaxRequest() {
 	req.xmlHttpRequest = AjaxRequest.getXmlHttpRequest();
 	if (req.xmlHttpRequest==null) { return null; }
 	
+			
 	// -------------------------------------------------------
 	// Attach the event handlers for the XMLHttpRequest object
 	// -------------------------------------------------------

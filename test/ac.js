@@ -1,7 +1,10 @@
 //todo manca una utility che crei l'albero xml
 //da mandare al formatto
-var array1 = new Array();
 var proxy =  "http://stanisci.web.cs.unibo.it/cgi-bin/pps.php5?yws_path="; //attaccarci la query 
+
+
+
+
 var acds = {
 			
 
@@ -9,32 +12,58 @@ var acds = {
 			dsCats: new Array("http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml",
 					  "http://ltw0807.web.cs.unibo.it/ds/catalog.xml",
 					  "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml"),
-			ds: [],
+			ds: ["gattino"],
 			
-			init: function(){	
-		var c = new DS("xxx");	
-		this.ds.push(c);
-debugger;
-				for(var key in this.dsCats){
-
-				AjaxRequest.get(	
-					{
-					'url': proxy + this.dsCats[key],
-					'onSuccess': function(req){ 
+			_init: function(parametro){ 
+						 
 						//ocho all'import()
-						var name = Util.getStr(req.responseXML, "/catalogo/globale/nome");
-						var qury = Util.getStr(req.responseXML, "string(/catalogo/accesso/*[1])");
-						// la stringa /catalogo/accesso/queryURI non funziona, forse a causa dell'upper case ??
-						var sury = Util.getStr(req.responseXML, "/catalogo/accesso/*[2]");
+	//					var myNode = parametro.responseXML.cloneNode(true);
+	//
+						
+					
+					try{
+
+						var name = Util.getStr(parametro.responseXML, "/catalogo/globale/nome");
+						var myNode = parametro.responseXML;}
+
+					catch(e){ var myNode = document.importNode(parametro.responseXML.documentElement, true);
+						//debugger;
+					       var name = Util.getStr(myNode, ".//nome"); //FIXME cambiatala query string
+						 }
+
+						debugger;	
+						var qury = Util.getStr(myNode, ".//accesso/*[1])");
+						var sury = Util.getStr(myNode, ".//accesso/*[2]");
+
 						//riempio i campi del key-esimo oggettino DS
 						var pippo = new DS(name);
-debugger;
-						this.ds.push(pippo);
-						this.ds[name].setQury(qury);
-						this.ds[name].setSury(suri);}
-					}) 
-							     } //fine del foreach
-			}, //fine della init
+						pippo.setQuri(qury);	
+						pippo.setSuri(sury);
+						acds.ds[name] = pippo;
+
+			},
+
+
+
+			init: function(){	
+				
+
+				for(var key in this.dsCats){
+	          
+                 
+                     var obi = {
+					'url': proxy + this.dsCats[key],
+					
+					'onSuccess': this._init
+							
+						};
+							
+				AjaxRequest.get(obi);
+					
+
+							} //fine del foreach
+
+						}, //fine della init
 
 
 			
@@ -320,4 +349,3 @@ var acdf = {
  - http://ltw0802.web.cs.unibo.it/DF/catalogo.xml
  - mail a umezzogo@cs.unibo.it
  */
-

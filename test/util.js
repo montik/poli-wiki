@@ -14,7 +14,7 @@
 
 
 /*miniclasse che rappresenta una coppia layout-skin FIXME classe quasi deprecata!!!
- * con skin non obbligatorio*/
+ * con skin non obbligatorio
 
 	function LaySkin(n){
 	this.layout = n; //vale anche da nome
@@ -22,6 +22,7 @@
 	this.setSkin = function(s) {this.skin = s;}
 	
 	}
+*/
 
 
 /* classe che rappresenta l'oggetto DF,
@@ -30,7 +31,8 @@
  * documenti interi,
  * fformat che memorizza l'url per la formattazione
  * di FRAMMENTI di docuento,
- * stuff che memorizza un oggettino LaySkin.*/
+ * stuff che memorizza un oggettino LaySkin.DEPRECATO:w
+ **/
 
 	function DF(n){
 
@@ -44,7 +46,6 @@
 		this.setLayoUri = function(s) {this.layoutUri = s;} //uri dov'e' l'elenco dei layouts
 		this.setDformUri = function(s) {this.dformUri = s;} //uri di richiesta formattazione documenti interi
 		this.setFformUri = function(s) {this.fformUri = s;} //uri di richiesta formattazione frammenti
-		this.setSkin = function(s) {this.skin = s;} //lista degli ULTIMI layout+skin implementati
 		this.setLayout = function(s) {this.layout = s;} //lista degli ULTIMI layout+skin implementati
 
 }	
@@ -113,17 +114,15 @@
  */
 	function getStr(contextNode, xpathExpr) 
 	{ 
-		var regex = /^string/;
+	/*	var regex = /^string/;
 		
-//		if(!regex.exec(xpathExpr)){ //la stringa non e' canonica
-//		var newxp = "string(" + xpathExpr + ")";
-//			}
+		if(!regex.exec(xpathExpr)){ //la stringa non e' canonica
+		var newxp = "string(" + xpathExpr + ")";
+			}
 		
-//		else var newxp = xpathExpr;
-		var newxp = xpathExpr;
+		else*/ var newxp = xpathExpr;
 		var str = document.evaluate(newxp, contextNode, null, XPathResult.ANY_TYPE, null);
 		//var str = document.evaluate(newxp, contextNode, null, XPathResult.STRING_TYPE, null);
-//		return str.stringValue;
 		var ciccio =  str.iterateNext().textContent;
 		return ciccio;	
 	

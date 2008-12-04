@@ -23,3 +23,24 @@ Function.prototype.bind = function(context){
     };
   }
 };
+
+/*Function.prototype.bind = function (obj) {
+  
+var fn = this;
+  
+return function () {
+  
+var args = [this];
+  
+for (var i = 0, ix = arguments.length; i < ix; i++) {
+ 
+args.push(arguments[i]);
+  
+}
+  
+return fn.apply(obj, args);
+ 
+};
+
+};
+*/

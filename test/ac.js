@@ -18,59 +18,47 @@ var acds = {
 					
 					'onSuccess':	function(parametro){ 
 						 
-						
-					
 						var myNode = document.importNode(parametro.responseXML.documentElement, true);
 				                var name = Util.getStr(myNode, ".//nome");
-
 						var qury = Util.getStr(myNode, ".//accesso/*[position()=1]");
 						var sury = Util.getStr(myNode, ".//accesso/*[2]");
-
 						var pippo = new DS(name);
 						pippo.setQuri(qury);	
 						pippo.setSuri(sury);
-						ds[name] = pippo;
-			}
+						ds[name] = pippo;}
+			};
 							
-						}; //fine oggetto get
+						} //fine foreach
 							
 				AjaxRequest.get(obi);
 					
 
-							} //fine del foreach
+							}, //fine init
 
-						}, //fine della init
-
-
-			query: function(qform){var qstring = AjaxRequest.serializeForm(qform);
+			query: function(qform){var qstring = this.AjaxRequest.serializeForm(qform);
 
 								
-					var arrayResp = new Array();
-
-			
-			for(var key in ds){
+						var arrayResp = new Array();},
 				
-				var parobj = {'url': ds[key].queryUri + qstring, //FIXME 
-					      'onSuccess': function(doc){arrayResp.push(doc.responseXML);}.bind(this)};			
-						
-						AjaxRequest.get(parobj);}
-					return arrayResp;
-					}, 
 			
 
 			salva: function(schedaXml, dove){ 
 			
 				var encoded = escape(encodeURIcomponent(scheda, ds));
-				var uri = ds[dove].salvaURI;
+				var uri = this.ds[dove].salvaURI;
 
 				var par = {
-						'url': uri,
+						'uri': uri,
 						'onError': function(){alert("salvataggio non riuscito");},
 						'scheda': encoded
-									};
 						
-				AjaxRequest.post(par);}
-
+							};
+						
+				this.AjaxRequest.post(par);
+			
+			
+			
+			}
 }; //fine acds
 
 var acdf = {
@@ -117,9 +105,8 @@ var acdf = {
 					var myNode = document.importNode(parametro.responseXML.documentElement, true);
 					var laydomlist = document.evaluate("layout", myNode, null, XPathResult.ANY_TYPE, null);
 
-					//function proc(domlist){	
-					var n = laydomlist.iterateNext();
-					var outer = new Array(); //contiene la lista di tutti i ly relativi al DF
+					function proc(domlist){	
+						var n = domlist.iterateNext();
 	
 					while(n){	
 						
@@ -139,9 +126,15 @@ var acdf = {
 						alert(outer[layNome]);
 						}
 						else outer[laynome];
-						n = laydomlist.iterateNext();}
+						n = domlist.iterateNext();}
 						
+						}//fine proc (interna di onSuccess)
 
+									
+				
+
+						var outer = new Array(); //contiene la lista di tutti i ly relativi al DF
+						proc(laydomlist);
 						df[dfname].setLayout(outer);
 							} //fine function onSuccess di update()			
 				}; // fine costruzione oggetto parametro
@@ -158,13 +151,13 @@ var acdf = {
 		//formatta documento intero, vuole l'xml gia pronto e il nome del df
 		formatFrag: function(frag, df){
 		
-			var uri = df[df].fformUri;
+			var uri = this.df[df].fformUri;
 			var xml = escape(encodeURIcomponent(frag));
 	
 			//creo il parametro per la post()
 		var parobj = {
 		
-			'url': uri,
+			'uri': uri,
 			'dati': xml,
 			'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!");},
 			'onSuccess': function(){alert("modificare dom della pagina");}
@@ -178,13 +171,13 @@ var acdf = {
 
 		formatDoc: function(doc, df){
 		
-			var uri = df[df].dformUri;
+			var uri = this.df[df].dformUri;
 			var xml = escape(encodeURIcomponent(doc));
 	
 			//creo il parametro per la post()
 			var parobj = {
 			
-				'url': uri,
+				'uri': uri,
 				'dati': xml,
 				'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!");},
 				'onSuccess': function(){alert("modifica dom visualizzazione finale");}
@@ -232,7 +225,6 @@ var acdf = {
 			var dati = document.createElement("dati");
 
 			formatta.appendChild(dati);
-			return formatta;
 		}
 
 		

@@ -1,11 +1,11 @@
 var df = {}; 
 var ds = {};
-
+var proxy = "http://stanisci.web.cs.unibo.it/cgi-bin/pps.php5?yws_path=";
 var acds = {
 			
 
 			hello: function(){alert("hello bello")},
-			dsCats: new Array("catalogo.xml"),
+			dsCats: new Array("http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml"),
 				
 
 			init: function(){	
@@ -14,7 +14,7 @@ var acds = {
 	          
                  
                      var obi = {
-					'url': this.dsCats[key],
+					'url': proxy + this.dsCats[key],
 					
 					'onSuccess':	function(parametro){ 
 						 
@@ -35,26 +35,38 @@ var acds = {
 
 							}, //fine init
 
-			query: function(qform){var qstring = this.AjaxRequest.serializeForm(qform);
+			query: function(qform){//var qstring = AjaxRequest.serializeForm(qform); todo serve un form
+					       var  qstring = "edate=2008*";
+					       var arrayResp = new Array("100 euro");
+					       var handle = function(par){
+							var myNode = document.importNode(par.responseXML.documentElement, true);
+							arrayResp.push(myNode);
+							};
 
-								
-						var arrayResp = new Array();},
+					       var obj = {'onSuccess': handle};//altrimenti rischio di ritornare un array con non tutti i response
+					       
+					       for(var i in ds){ obj.url = proxy + ds[i].queryUri + "?" + qstring;
+							     AjaxRequest.get(obj);}
+
+							
+							return arrayResp; // FIXME alto rischio di asincronie FIXME
+							
+										},
 				
 			
 
 			salva: function(schedaXml, dove){ 
 			
-				var encoded = escape(encodeURIcomponent(scheda, ds));
-				var uri = this.ds[dove].salvaURI;
+				var uri = this.ds[dove].salvaUri;
 
 				var par = {
-						'uri': uri,
+						'url': proxy + uri,
 						'onError': function(){alert("salvataggio non riuscito");},
 						'scheda': encoded
 						
 							};
 						
-				this.AjaxRequest.post(par);
+				AjaxRequest.post(par);
 			
 			
 			
@@ -68,26 +80,27 @@ var acdf = {
 //					"http://ltw0807.web.cs.unibo.it/df/xhtml/catalog.xml",	
 //					"http://ltw0807.web.cs.unibo.it/df/pdf/catalog.xml",
 //					"http://ltw0802.web.cs.unibo.it/DF/catalogo.xml"),
-		dfref: new Array("cata_df.xml"),		
+		
+		dfref: new Array("http://ltw0807.web.cs.unibo.it/df/xhtml/catalog.xml"),
 		
 		init: function(){
 				for(key in this.dfref){
 				//parametro per la get()
-				var par = {
-					'url': this.dfref[key],
-					'onSuccess': function(parametro){
-						var myNode = document.importNode(parametro.responseXML.documentElement, true);//todo provare con this
-						var nome = Util.getStr(myNode, "./global/@name");
-						var llay = Util.getStr(myNode, "./global/@list-layout")
-						var frmtDoc = Util.getStr(myNode, "./format/@*[position()=1]");
-						var frmtFra = Util.getStr(myNode, "./format/@*[position()=2]");
-						var dfist = new DF(nome);	
-						dfist.setLayoUri(llay);
-						dfist.setDformUri(frmtDoc);
-						dfist.setFformUri(frmtFra);
-						df[nome] = dfist;
-								} //fine dichiarazione funzione onSuccess
-			}; // fine oggetto da passare alla get
+		var par = {
+			'url': proxy + this.dfref[key],
+			'onSuccess': function(parametro){
+			var myNode = document.importNode(parametro.responseXML.documentElement, true);//todo provare con this
+			var nome = Util.getStr(myNode, "./global/@name");
+			var llay = Util.getStr(myNode, "./global/@list-layout")
+			var frmtDoc = Util.getStr(myNode, "./format/@*[position()=1]");
+			var frmtFra = Util.getStr(myNode, "./format/@*[position()=2]");
+			var dfist = new DF(nome);	
+			dfist.setLayoUri(llay);
+			dfist.setDformUri(frmtDoc);
+			dfist.setFformUri(frmtFra);
+			df[nome] = dfist;
+				} //fine dichiarazione funzione onSuccess
+	}; // fine oggetto da passare alla get
 					AjaxRequest.get(par);
 					}//fine perOgni
 	
@@ -97,7 +110,7 @@ var acdf = {
 		update: function(dfname){
 				var layUpdateUri = df[dfname].layoutUri; //url da querare per ricevere elenco layouts/skin
 				var parobj = {		
-							'url': layUpdateUri,
+							'url': proxy + layUpdateUri,
 							//setta la lista di skins e la lista di layouts
 							//del DF dfname
 			
@@ -152,13 +165,12 @@ var acdf = {
 		formatFrag: function(frag, df){
 		
 			var uri = this.df[df].fformUri;
-			var xml = escape(encodeURIcomponent(frag));
 	
 			//creo il parametro per la post()
 		var parobj = {
 		
-			'uri': uri,
-			'dati': xml,
+			'url': uri,
+			'dati': frag,
 			'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!");},
 			'onSuccess': function(){alert("modificare dom della pagina");}
 				
@@ -172,13 +184,12 @@ var acdf = {
 		formatDoc: function(doc, df){
 		
 			var uri = this.df[df].dformUri;
-			var xml = escape(encodeURIcomponent(doc));
 	
 			//creo il parametro per la post()
 			var parobj = {
 			
-				'uri': uri,
-				'dati': xml,
+				'url': uri,
+				'dati': doc,
 				'onError': function(){alert("gestiscilo anche nelle altre richieste .. .onError!!!");},
 				'onSuccess': function(){alert("modifica dom visualizzazione finale");}
 				};
@@ -207,9 +218,9 @@ var acdf = {
 				var layout = document.createElement("layout");
 				
 				//setto il valore dell'attributo ID
-				var id = document.createAttribute("id");
+				var id = layout.createAttribute("id");
 				id.nodeValue = lay;
-				layout.appendChild(id);
+				//layout.appendChild(id);
 
 				info.appendChild(layout);
 				
@@ -225,6 +236,7 @@ var acdf = {
 			var dati = document.createElement("dati");
 
 			formatta.appendChild(dati);
+			return formatta;
 		}
 
 		

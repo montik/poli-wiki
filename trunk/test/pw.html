@@ -1,0 +1,28 @@
+<html>
+<head>
+	<script src="poli-wiki/test/bind.js"></script>
+	<script src="poli-wiki/test/AjaxRequest.js"></script>
+	<script src="poli-wiki/test/util.js"></script>
+	<script src="poli-wiki/test/ac.js"></script>
+	<script src="al.js"></script>
+</head>	
+<body bgcolor="#0033F">
+
+	Questo e' il body<br>
+	entro 6 secondi i formatters saranno aggiornati<br>
+		   
+
+	<script type="text/javascript">
+	var GO = false;
+	var t;
+	setTimeout("GO = true", 7000);
+	function dfup(){if(GO || df.length == 3 ) for(var i in df) acdf.update(i);
+			else t = setTimeout('dfup()', 500);
+			return;}
+	acds.init();
+	acdf.init();
+	dfup();
+	getHome();
+	</script>
+</body>
+</html>

@@ -326,26 +326,30 @@ function AjaxRequest() {
 		function() {
 			if (req.xmlHttpRequest!=null) {
 				// Some logic to get the real request URL
-				if (req.generateUniqueUrl && req.method=="GET") {
-					req.parameters["AjaxRequestUniqueId"] = new Date().getTime() + "" + req.requestIndex;
+			if (req.generateUniqueUrl && req.method=="GET") {
+				req.parameters["AjaxRequestUniqueId"] = new Date().getTime() + "" + req.requestIndex;
 				}
-				var content = null; // For POST requests, to hold query string
-				for (var i in req.parameters) {
-					if (req.queryString.length>0) { req.queryString += "&"; }
-					req.queryString += encodeURIComponent(i) + "=" + encodeURIComponent(req.parameters[i]);
+			var content = null; // For POST requests, to hold query string
+			for (var i in req.parameters) {
+				if (req.queryString.length>0) { req.queryString += "&"; }
+//				req.queryString += i + "=" + req.parameters[i];
+			req.queryString += encodeURIComponent(i) + "=" + encodeURIComponent(req.parameters[i]);
+			}
+			if (req.method=="GET") {
+				if (req.queryString.length>0) {
+					req.url += ((req.url.indexOf("?")>-1)?"&":"?") + req.queryString;
 				}
-				if (req.method=="GET") {
-					if (req.queryString.length>0) {
-						req.url += ((req.url.indexOf("?")>-1)?"&":"?") + req.queryString;
-					}
 				}
 				req.xmlHttpRequest.open(req.method,req.url,req.async,req.username,req.password);
-				if (req.method=="POST") {
-					if (typeof(req.xmlHttpRequest.setRequestHeader)!="undefined") {
-						req.xmlHttpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			///////////////////////////////////////////////
+			if (req.method=="POST") {
+			if (typeof(req.xmlHttpRequest.setRequestHeader)!="undefined") {
+//			req.xmlHttpRequest.setRequestHeader('Content-type', 'text/xml');
+			req.xmlHttpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 					}
 					content = req.queryString;
 				}
+			//////////////////////////////////////////////
 				if (req.timeout>0) {
 					setTimeout(req.onTimeoutInternal,req.timeout);
 				}

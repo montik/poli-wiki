@@ -1,6 +1,19 @@
-/* classe che rappresenta l'oggetto DS
- * eliminando tutte le informazioni non
- * necessarie tenendo solo nome,
+function serializza(node)
+	{
+	    if (typeof XMLSerializer != "undefined") 
+		return new XMLSerializer().serializeToString(node);
+	    else if (node.xml) return node.xml; 
+	    else throw "errore nella serializzazione " + node; 
+	};
+
+
+
+
+
+/*
+* classe che rappresenta l'oggetto DS
+* eliminando tutte le informazioni non
+* necessarie tenendo solo nome,
  * queryURI e salvaURI
  */
 
@@ -33,7 +46,6 @@
  * di FRAMMENTI di docuento,
  * stuff che memorizza un oggettino LaySkin.DEPRECATO:w
  **/
-
 	function DF(n){
 
 		this.nome = n;
@@ -47,7 +59,9 @@
 		this.setDformUri = function(s) {this.dformUri = s;} //uri di richiesta formattazione documenti interi
 		this.setFformUri = function(s) {this.fformUri = s;} //uri di richiesta formattazione frammenti
 		this.setLayout = function(s) {this.layout = s;} //lista degli ULTIMI layout+skin implementati
-
+		this.setPdata = function(s) {this.pdata = s;} // il nome della variabile in cui va incapsulato l'xml
+								//nel post
+		this.setSpec = function(s) {this.spec = s;} //array con nomi dei tag speciali supportati
 }	
 
 

@@ -31,7 +31,7 @@ init: function(){
 	AjaxRequest.get(obi);
 		
 	}, //fine init
-query: function(qform, funz){var qstring = AjaxRequest.serializeForm(qform); todo serve un form
+query: function(qform, funz){var qstring = AjaxRequest.serializeForm(qform); //todo serve un form
 		       var arrayResp = new Array();
 		       var handle = function(par){
 	var myNode = document.importNode(par.responseXML.documentElement, true);

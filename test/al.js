@@ -16,4 +16,8 @@ compose(tronco, "formatta/dati", new Array(appendi)); //qui ho il dom della home
 var xml = serializza(tronco);
 acdf.formatDoc(xml, DFCORR, homeHandl)}; //TODO homeHandl da definire. Deve rimpiazzare l'attuale body.
 AjaxRequest.get(obi);}
+};
+
+function replyTo (scheda, reply){
+	
 }

@@ -562,4 +562,3 @@ AjaxRequest.numActiveAjaxGroupRequests = new Object();
  * The total number of AjaxRequest objects instantiated
  */
 AjaxRequest.numAjaxRequests = 0;
-

@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
 <script type="text/javscript" src="AjaxRequest.js"></script>
-<script type="text/javascript" src="util.sj"></script>
+<script type="text/javascript" src="util.js"></script>
 <script type="text/javascript" src="al.js"></script>
 </HEAD>
 
@@ -14,7 +14,7 @@ function sendReq(url, body){
 if (!url){
 	url=document.forms["test_reply"].url.value;
 }
-alert (url);
+//alert (url);
 //alert (body);
 try
 {
@@ -47,7 +47,7 @@ function prova_reply(req, body){
 	if (req.readyState == 4) {
 		
 		if (req.status == 200){
-			alert ("hei, siamo allo state 4 e tutto sembra ok!");
+	//		alert ("hei, siamo allo state 4 e tutto sembra ok!");
 			replyTo (req.responseXML, body);
 		}else{
 			alert ("c'e' stato un problema con la ricezione.\n req.status:"+req.status);

@@ -26,7 +26,12 @@ AjaxRequest.get(obi);
 /*replyTo:
  * scheda-> e' un documento DOM, la scheda a cui si intende rispondere
  * reply-> contiene il body della risposta
+ * 
+ * dipende da util.js
  */
 function replyTo (scheda, reply){
-	alert (scheda);
+	var uno = scheda.getElementsByTagName("metadati").length;
+	var ecreator = scheda.getElementsByTagName("ecreator")[0].textContent;
+	print (ecreator);
+	debugger;
 }

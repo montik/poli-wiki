@@ -9,12 +9,13 @@
 <script type="text/javascript" >
 
 var req = false;
-function sendReq(url){
+function sendReq(url, body){
 
 if (!url){
 	url=document.forms["test_reply"].url.value;
-	alert (url);
 }
+alert (url);
+//alert (body);
 try
 {
 	req = new XMLHttpRequest();	
@@ -35,19 +36,21 @@ try
 if (!req){
 	alert ("error initializing AXAJ request!");
 }
-
 req.open("GET", url, true);
-req.onreadystatechange = prova_reply;
+req.onreadystatechange = function() {prova_reply(req, body);};
 req.send(null);
+//var response = req.responseXML;
 }
 
-function prova_reply(){
+function prova_reply(req, body){
 	
 	if (req.readyState == 4) {
+		
 		if (req.status == 200){
 			alert ("hei, siamo allo state 4 e tutto sembra ok!");
+			replyTo (req.responseXML, body);
 		}else{
-			alert ("c'e' stato un problema con la ricezione")
+			alert ("c'e' stato un problema con la ricezione.\n req.status:"+req.status);
 		}
 	}
 }
@@ -55,8 +58,11 @@ function prova_reply(){
 </script>
 
 <form name="test_reply">
-	<input value="http://localhost/poli-wiki/XML/scheda1.xml" name="url" type="text" />
-	<input type="submit" value="request url" name="send" onClick="sendReq('')"/>
+	url della scheda(@localhost):
+	<input value="http://localhost/poli-wiki/XML/scheda1.xml" name="url" type="text" /><BR>
+	body della request:
+	<input type="text" name="body" type="text"/>
+	<input type="button" value="request url" name="send" onClick="sendReq('', document.forms['test_reply'].body.value)"/>
 </form>
 </BODY>
 

@@ -28,5 +28,5 @@ AjaxRequest.get(obi);
  * reply-> contiene il body della risposta
  */
 function replyTo (scheda, reply){
-		
+
 }

@@ -7,7 +7,31 @@
 
 <BODY>
 <script type="text/javascript" >
-alert ("hello");
+var req = false;
+
+try
+{
+	req = new XMLHttpRequest();	
+}	catch (trymicrosoft){
+		try {
+		req = new ActiveXObject("Msxm12.XMLHTTP");
+		}
+	catch (othermicrosoft){
+		try{	
+		req = new ActiveXobject("Microsoft.XMLHTTP");
+		} 
+	catch (fail){
+		req = false;
+	}
+	}
+	}
+
+if (!req){
+	alert ("error initializing AXAJ request!");
+}
+url = "http://slocalhost/TODO";
+req.open("GET", url, true);
+
 </script>
 </BODY>
 

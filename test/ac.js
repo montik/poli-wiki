@@ -17,7 +17,7 @@ init: function(){
 		'onSuccess':	function(parametro){ 
 			 
 			var myNode = document.importNode(parametro.responseXML.documentElement, true);
-	                var name = Util.getStr(myNode, ".//nome");
+            var name = Util.getStr(myNode, ".//nome");
 			var qury = Util.getStr(myNode, ".//accesso/*[position()=1]");
 			var sury = Util.getStr(myNode, ".//accesso/*[2]");
 			var pippo = new DS(name);

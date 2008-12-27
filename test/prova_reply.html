@@ -48,8 +48,10 @@ function prova_reply(req, body){
 		
 		if (req.status == 200){
 	//		alert ("hei, siamo allo state 4 e tutto sembra ok!");
-			replyTo (req.responseXML, body);
-		}else{
+	        var myNode = document.importNode(req.responseXML.documentElement, true);
+	        debugger;
+			replyTo(req, "empty body");
+			}else{
 			alert ("c'e' stato un problema con la ricezione.\n req.status:"+req.status);
 		}
 	}
@@ -61,7 +63,8 @@ function prova_reply(req, body){
 	url della scheda(@localhost):
 	<input value="http://localhost/poli-wiki/XML/scheda1.xml" name="url" type="text" /><BR>
 	body della request:
-	<input type="text" name="body" type="text"/>
+	<input type="text" name="body" type="text"/><BR>
+	
 	<input type="button" value="request url" name="send" onClick="sendReq('', document.forms['test_reply'].body.value)"/>
 </form>
 </BODY>

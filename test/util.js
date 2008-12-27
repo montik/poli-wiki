@@ -137,9 +137,9 @@ function serializza(node)
 		else*/ var newxp = xpathExpr;
 		var str = document.evaluate(newxp, contextNode, null, XPathResult.ANY_TYPE, null);
 		//var str = document.evaluate(newxp, contextNode, null, XPathResult.STRING_TYPE, null);
+		debugger;
 		var ciccio =  str.iterateNext().textContent;
-		return ciccio;	
-	
+		return ciccio;
 	}
 
 

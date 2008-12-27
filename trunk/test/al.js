@@ -30,8 +30,18 @@ AjaxRequest.get(obi);
  * dipende da util.js
  */
 function replyTo (scheda, reply){
-	var uno = scheda.getElementsByTagName("metadati").length;
-	var ecreator = scheda.getElementsByTagName("ecreator")[0].textContent;
-	print (ecreator);
+ //    alert (scheda.responseXML.documentElement);
+    
+    //var myNode = document.importNode(scheda.responseXML.documentElment, true);
+    
+	//var ecreator = Util.getStr(scheda, './metadati');
+	var myNode = scheda.responseXML.documentElement;
+	var yourNode = document.importNode (myNode, true);
+	
+
+	//var prova = document.evaluate("//ecreator", yourNode, null, XPathResult.STRING_TYPE, null);
+	var prova = Util.getStr(yourNode, "//ecreator");
 	debugger;
+	alert (prova);
+	
 }

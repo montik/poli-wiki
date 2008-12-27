@@ -1,0 +1,85 @@
+<ds:response  xmlns:ds="http://ltw.web.cs.unibo.it/resp"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ltw.web.cs.unibo.it/resp http://vitali.web.cs.unibo.it/twiki/pub/TechWeb08/PagSchemaDS/responseSchema.xsd"
+query="etype=risposta&wTitle=Legge%20Elettorale%202008">
+      <metadati>
+         <work>
+            <widentifier>http://www.datasourcedelcittadino.it/elettorale2008/comm01</widentifier>
+            <wcreator>Onorevole Rossi</wcreator>   
+            <wcoverage>2008</wcoverage>
+            <wtitle>Legge Elettorale 2008</wtitle>
+            <wdate>2001-01-01T01:01:01</wdate>
+         </work>
+         <expression>
+            <eidentifier>http://www.datasourcedelcittadino.it/elettorale2008/comm01V01</eidentifier>
+            <ecreator>Onorevole Rossi</ecreator>
+            <edate>2001-01-01T01:01:01</edate>
+            <edescription>Questa documento parla della legge elettorale valida nelle elezioni 
+               2008 e ne evidenzia gli aspetti positivi.</edescription>
+            <elanguage>it</elanguage>
+            <esource>http://www.datasorcedelcittadino.it/elettorale2008/comm01</esource>
+            <erelation></erelation>
+            <epublisher>Data Source del Cittadino</epublisher>
+            <esubject>
+               <folksonomia>Politica</folksonomia>
+               <folksonomia>Senato</folksonomia>
+            </esubject>
+            <etitle>Legge Elettorale 2008, la buona notizia</etitle>
+            <etype>risposta</etype>
+         </expression>
+      </metadati>  
+      <metadati>
+         <work>
+            <widentifier>http://www.datasourcedelcittadino.it/elettorale2008/comm01</widentifier>
+            <wcreator>Onorevole Rossi</wcreator>   
+            <wcoverage>2008</wcoverage>
+            <wtitle>Legge Elettorale 2008</wtitle>
+            <wdate>2001-01-01T01:01:01</wdate>
+         </work>
+         <expression>
+            <eidentifier>http://www.datasourcedelcittadino.it/elettorale2008/comm01V02</eidentifier>
+            <ecreator>Onorevole Verdi</ecreator>
+            <edate>2001-01-02T01:01:01</edate>
+            <edescription>Questa documento parla della legge elettorale valida nelle elezioni 2008, 
+                 e si focalizza sullo sbarramento al Senato.</edescription>
+            <elanguage>it</elanguage>
+            <esource>http://www.datasorcedelcittadino.it/elettorale2008/comm01</esource>
+            <erelation>http://www.datasorcedelcittadino.it/elettorale2008/comm01V01</erelation>
+            <epublisher>Data Source del Cittadino</epublisher>
+            <esubject> 
+               <folksonomia>Politica</folksonomia>
+               <folksonomia>Senato</folksonomia>
+               <folksonomia>Elezioni</folksonomia>
+            </esubject>
+            <etitle>Legge Elettorale 2008, al senato</etitle>
+            <etype>risposta</etype>
+         </expression>
+      </metadati>  
+      <metadati>
+         <work>
+            <widentifier>http://www.datasourcedelcittadino.it/elettorale2008/comm01</widentifier>
+            <wcreator>Onorevole Rossi</wcreator>   
+            <wcoverage>2008</wcoverage>
+            <wtitle>Legge Elettorale 2008</wtitle>
+            <wdate>2001-01-01T01:01:01</wdate>
+         </work>
+         <expression>
+            <eidentifier>http://www.datasourcedelcittadino.it/elettorale2008/comm01V03</eidentifier>
+            <ecreator>Onorevole Pigna</ecreator>
+            <edate>2001-01-03T01:01:01</edate>
+            <edescription>Questa documento parla della legge elettorale valida nelle elezioni 2008 e 
+                discute tutti gli aspetti negativi in dettaglio.</edescription>
+            <elanguage>it</elanguage>
+            <esource>http://www.datasorcedelcittadino.it/elettorale2008/comm01</esource>
+            <erelation>http://www.datasorcedelcittadino.it/elettorale2008/comm01V02</erelation>
+            <epublisher>Data Source del Cittadino</epublisher>
+            <esubject>
+               <folksonomia>Politica</folksonomia>
+               <folksonomia>Senato</folksonomia>
+               <folksonomia>Male</folksonomia>
+            </esubject>
+            <etitle>Legge Elettorale 2008, la cattiva notizia</etitle>
+            <etype>risposta</etype>
+         </expression>
+      </metadati>
+</ds:response>s

@@ -49,9 +49,9 @@ function prova_reply(req, body){
 		if (req.status == 200){
 	//		alert ("hei, siamo allo state 4 e tutto sembra ok!");
 	        var myNode = document.importNode(req.responseXML.documentElement, true);
-	        debugger;
-			replyTo(req, "empty body");
-			}else{
+			var prova = replyTo(req, "empty body");
+			}
+			else{
 			alert ("c'e' stato un problema con la ricezione.\n req.status:"+req.status);
 		}
 	}

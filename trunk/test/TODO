@@ -1,4 +1,6 @@
 # Nella mia intenzione questo file servirebbe per tenere traccia di che cosa va fatto e 
 # di chi se ne sta occupando.
  
-replyTo(scheda, reply){} -> edo
+1) replyTo(scheda, reply){} -> edo
+	verificare comportamento con browser diversi da FF3.
+	gestire correttamente(?) le folksonomie

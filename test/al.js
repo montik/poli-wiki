@@ -50,27 +50,26 @@ AjaxRequest.get(obi);
 
 function replyTo (scheda, reply, ecreator, edescription, elanguage, etitle, esubject){
 
-    // TODO verificare il tipo della variabile scheda. 
+    // TODO verificare il tipo della variabile scheda.
+    // myNode corrisponde alla scheda cui si intende rispondere 
 	var tempNode = scheda.responseXML.documentElement;
     var myNode = document.importNode (tempNode, true);
     
+    //variabili prese da myNode
     var schedaTitolo = Util.getStr (myNode, "//wtitle");
-    
     var schedaSource = Util.getStr(myNode,"//esource");
     var schedaRelation = Util.getStr(myNode,"//eidentifier");
-    debugger;
-
+    
 	var schedaWork = myNode.getElementsByTagName("work")[0];
 	var expression = document.createElement("expression");
-
+  
+    //costruisco l'XML per l'expression della risposta
 	build (expression, "ecreator", ecreator, "ecreator");
 	build (expression, "edescription", edescription, "edescription");
 	build (expression, "elanguage", elanguage, "it");
 	build (expression, "erelation", schedaRelation);
 	build (expression, "esource", schedaSource);
-	build (expression, "epublisher", "epublisher");
-	
-	
+	build (expression, "epublisher", "epublisher");	
 
     //se non specificato, mette il titolo della scheda cui si risponde
 	build (expression, "etitle", etitle, schedaTitolo); 
@@ -80,16 +79,19 @@ function replyTo (scheda, reply, ecreator, edescription, elanguage, etitle, esub
 	var toRet      = document.createElement("ds:scheda");
 	var metadati   = document.createElement("metadati");
 	var body       = document.createElement("body");
-	body.appendChild (document.createTextNode(reply));
 	
+	body.appendChild (document.createTextNode(reply));
 	metadati.appendChild(schedaWork);
 	metadati.appendChild(expression);
 	
+	//aggrego il DOM finale toRet 
 	toRet.appendChild(metadati);
 	toRet.appendChild(body);
+	
 	//TODO definire completamente il namespace
 	toRet.setAttribute("xmlns:ds","http://ltw.web.cs.unibo.it/esempio");
-	console.info(toRet);
+	
+	console.info(toRet); //DEBUG
 	return toRet;	
 }
 

@@ -95,16 +95,6 @@ function replyTo (scheda, reply, ecreator, edescription, elanguage, etitle, esub
 	return toRet;	
 }
 
-var appendi = rec.responseXML.documentElement;
-var layout = randLay(DFCORR);
-var skin = randSkin(DFCORR, layout);
-var tronco = acdf.assem(layout, skin);
-compose(tronco, "formatta/dati", new Array(appendi)); //qui ho il dom della home da mandare al formatto
-var xml = serializza(tronco);
-acdf.formatDoc(xml, DFCORR, homeHandl) }; //TODO homeHandl da definire. Deve rimpiazzare l'attuale body.
-AjaxRequest.get(obi);}
-
-
 /**
  * build (addTo, addMe, txt, altTxt):
  * 

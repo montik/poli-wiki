@@ -9,7 +9,7 @@
 <script type="text/javascript" >
 
 var req = false;
-function sendReq(url, body){
+function sendReq(url){
 
 if (!url){
 	url=document.forms["test_reply"].url.value;
@@ -37,26 +37,35 @@ if (!req){
 	alert ("error initializing AXAJ request!");
 }
 req.open("GET", url, true);
-req.onreadystatechange = function() {prova_reply(req, body);};
+req.onreadystatechange = function() {prova_reply(req);};
 req.send(null);
 //var response = req.responseXML;
 }
 
-function prova_reply(req, body){
+function prova_reply(req){
 	
 	if (req.readyState == 4) {
 		
 		if (req.status == 200){
 	//		alert ("hei, siamo allo state 4 e tutto sembra ok!");
-	        var myNode = document.importNode(req.responseXML.documentElement, true);
-			var prova = replyTo(req, "empty body");
-			debugger;
+	//      var myNode = document.importNode(req.responseXML.documentElement, true);
+			var body         = document.forms[0].body.value;
+			var ecreator     = document.forms[0].ecreator.value;
+			var edescription = document.forms[0].edescription.value;
+			var elanguage    = document.forms[0].elanguage.value;
+			var esubject     = new Array();
+			esubject[0] = document.forms[0].esubject.value;
+			esubject[1] = "ciao"; //DEBUG
+			esubject[2] = "tecweb & co"; //DEBUG
+			var options = ({"ecreator":ecreator, "edescription":edescription, "elanguage":elanguage,"esubject":esubject});
+			var prova = replyTo(req, body,options);
 			}
 			else{
-			alert ("c'e' stato un problema con la ricezione.\n req.status:"+req.status);
+			alert ("c'e' stato un problema con la ricezione.\n preq.status:"+req.status);
 		}
 	}
 }
+
 
 </script>
 
@@ -70,10 +79,10 @@ function prova_reply(req, body){
 	edescription
 	<input type="text" name="edescription"/><BR>
 	elanguage
-	<input type="radio" name="elanguage"/><BR>
-	esubject 
+	<input type="text" name="elanguage"/><BR>
+	esubject
 	<input type="text" name="esubject"/><BR>
-	<input type="button" value="request url" name="send" onClick="sendReq('', document.forms['test_reply'].body.value)"/>
+	<input type="button" value="request url" name="send" onClick="sendReq()"/>
 </form>
 </BODY>
 

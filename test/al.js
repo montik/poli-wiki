@@ -29,7 +29,7 @@ AjaxRequest.get(obi);
  * 
  * dipende da util.js
  * 
- * Data necessaria:
+ * option e' un array nominale che puo' contenere i seguenti elementi:
  * <expression>
       <eidentifier> -> settato dal DS (verra' sovrascritto)
       <ecreator> -> PARAMETRO, entita' che ha creato il documento
@@ -42,13 +42,13 @@ AjaxRequest.get(obi);
       <esource> Punta ad un URI. Indica il WORK di cui è un expression.
       *         In questo caso utilizzo l'esource del parametro scheda.
       <epublisher> -> settato dal DS (verra' sovrascritto)
-      <esubject> [<folksonomia>] PARAMETRO
+      <esubject> [<folksonomia>] PARAMETRO: un array contenente le voci di folksonomia da inserire.
       <etitle> PARAMETRO (Re:??)
       <etype> risposta
    </expression>
  */
 
-function replyTo (scheda, reply, ecreator, edescription, elanguage, etitle, esubject){
+function replyTo (scheda, reply, option){
 
     // TODO verificare il tipo della variabile scheda.
     // myNode corrisponde alla scheda cui si intende rispondere 
@@ -64,16 +64,25 @@ function replyTo (scheda, reply, ecreator, edescription, elanguage, etitle, esub
 	var expression = document.createElement("expression");
   
     //costruisco l'XML per l'expression della risposta
-	build (expression, "ecreator", ecreator, "ecreator");
-	build (expression, "edescription", edescription, "edescription");
-	build (expression, "elanguage", elanguage, "it");
+	build (expression, "ecreator", option.ecreator, "ecreator");
+	build (expression, "edescription", option.edescription, "edescription");
+	build (expression, "elanguage", option.elanguage, "it");
 	build (expression, "erelation", schedaRelation);
 	build (expression, "esource", schedaSource);
 	build (expression, "epublisher", "epublisher");	
 
     //se non specificato, mette il titolo della scheda cui si risponde
-	build (expression, "etitle", etitle, schedaTitolo); 
+	build (expression, "etitle", option.etitle, schedaTitolo); 
 	build (expression, "etype", "risposta");
+	
+	//genero esubject con le folksonomie 
+	var esubject = document.createElement("esubject");
+	if (option.esubject){
+		for (x in option.esubject){
+			build (esubject,"folksonomia",option.esubject[x]);
+		}
+	}
+	expression.appendChild(esubject);
       
 	
 	var toRet      = document.createElement("ds:scheda");
@@ -106,7 +115,8 @@ function replyTo (scheda, reply, ecreator, edescription, elanguage, etitle, esub
  * Se ne <txt> ne <altTxt> sono specificati, il nodo <addMe> non ha testo.
  */
 function build (addTo, addMe, txt, altTxt){
-    if (typeof txt == "undefined" && typeof altTxt != "undefined")
+    //se txt e' undefined o stringa vuota, utilizzo il valore alternativo
+    if ( !txt && typeof altTxt != "undefined")
             txt = altTxt;
     
     var myNode = document.createElement(addMe);
@@ -116,6 +126,7 @@ function build (addTo, addMe, txt, altTxt){
        var textNode = document.createTextNode(txt);
        myNode.appendChild (textNode);
     }
+    
     addTo.appendChild(myNode);
     
     return addTo;

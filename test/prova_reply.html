@@ -61,11 +61,18 @@ function prova_reply(req, body){
 </script>
 
 <form name="test_reply">
-	url della scheda(@localhost):
+	url della scheda:
 	<input value="http://localhost/poli-wiki/XML/scheda1.xml" name="url" type="text" /><BR>
 	body della request:
-	<input type="text" name="body" type="text"/><BR>
-	
+	<input type="text" name="body" /><BR>
+	ecreator
+	<input type="text" name="ecreator"/><BR>
+	edescription
+	<input type="text" name="edescription"/><BR>
+	elanguage
+	<input type="radio" name="elanguage"/><BR>
+	esubject 
+	<input type="text" name="esubject"/><BR>
 	<input type="button" value="request url" name="send" onClick="sendReq('', document.forms['test_reply'].body.value)"/>
 </form>
 </BODY>

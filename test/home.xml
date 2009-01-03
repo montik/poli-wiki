@@ -2,7 +2,7 @@
 	<div>
 	<div id="boxino">
 	<input type="text" name="edescripion"/><button onclick="piuCriteri(this.parentNode)">+</button><br>
-	<button onclick="divToForm(this)">Cerca</button>
+	<button onclick="acds.query(this, FUNZIONEONSUCCESS)">Cerca</button>
 	</div>
 	<div id="saluti">
 	Ciao, siamo il gruppo di techWeb.<br><br>

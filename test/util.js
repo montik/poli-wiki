@@ -83,32 +83,45 @@ function serializza(node)
  */
 	function compose(contextNode, xpathExpr, listaNodi, sub)
 	{
-		
-		var srad = document.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext(); //sotto-radice, ev.nte da sostituire
+		function iter2arr(iter){
+			var e = listaNodi.iterateNext();
+			var a = new Array();			 
+
+			while(e){
+
+				a.push(e);
+				e = listaNodi.iterateNext();}
+			return a;}
+	
+		var listaNodi2; 	
+		if(typeof(listaNodi.length) == "undefined") var listaNodi2 = iter2arr(listaNodi);
+		else listaNodi2 = listaNodi; 
+
+
+
+		var srad = contextNode.ownerDocument.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext(); //sotto-radice, ev.nte da sostituire
 
 		if(sub){ //caso di sostituzione
 			
-			if(listaNodi.length != 1){
+			if(listaNodi2.length != 1){
 			
 				alert("impossibile sostituire un nodo con 2 o piu");
 				return null;
-				
-				
 				}
-			var newNode = listaNodi[0];
+			else{
+			var newNode = listaNodi2[0];
 			var padreSrad = srad.parentNode; //fixme caso in cui srad=rad(tutto)
 			var rplcd = padreSrad.replaceChild(newNode, srad); //aggiungere debug
-
+					}
 		
 		}
 
-		else{ //nota: i figli vengono appesi in coda
+		else{
 
-			for(var i=0; i<listaNodi.length; i++){
-			
-				var figlio = listaNodi[i];
-				srad.appendChild(figlio);
-					
+for(var i=0; i<listaNodi2.length; i++)
+{
+   var figlio = listaNodi2[i];
+   srad.appendChild(figlio);
 				}
 			}
 

@@ -1,27 +1,46 @@
 // l'idea e' di tenere in questo file
 // solo le funzioni di onsuccess e onerror
-
-//var doc = document.implementation.createDocument();//sforna nodi xml
-/*
 function getHome(){
-    var obi = 
-    {
-        'url': document.location + "home.xml", 
-        'onSuccess':function(rec)
-        {
-            var appendi = rec.responseXML.documentElement;
-            var layout = randLay(DFCORR);
-            var skin = randSkin(DFCORR, layout);
-            var tronco = acdf.assem(layout, skin);
-            compose(tronco, "formatta/dati", new Array(appendi)); //qui ho il dom della home da mandare al formatto
-            var xml = serializza(tronco);
-            acdf.formatDoc(xml, DFCORR, homeHandl)
-        } //TODO homeHandl da definire. Deve rimpiazzare l'attuale body.
-    
-    }
+var layout = randLay(DFCORR);
+var skin = randSkin(DFCORR, layout);
+
+if(!skin || !layout) return;
+clearInterval(gh);
+
+function maneggiaHome(rec){
+		var appendi = doc.importNode(rec.responseXML.documentElement, true); //dom della home
+		var tronco = acdf.assem(layout, skin);
+//		figlicidio();	
+		var speciali = doc.createElement("speciali");	
+		var ee = new Array(speciali);
+		compose(tronco, "dati", ee);
+		
+		// lista delle skin
+		var opzioni = doc.createElement("opzioni");
+		opzioni.appendChild(stiListGen(df));
+<<<<<<< .mine
+
+		//logo
+		var logo = doc.createElement("logo");
+		var img = doc.createElement("img"); img.setAttribute("src", "http://i210.photobucket.com/albums/bb51/pindeonthenet/richardbenson3.jpg");
+		logo.appendChild(img);
+
+		var figli = new Array(appendi, opzioni, logo);
+		compose(tronco, "dati/speciali", figli); //qui ho il dom della home da mandare al formatto
+		PGNCORR = tronco.getElementsByTagName("dati").item(0).cloneNode(true);
+		var xml = serializza(tronco);
+		acdf.formatDoc(xml, DFCORR, gambizza); //gambizza e' una funzione che sostitutisce l'html corrente
+		
+							}
+var obi = {
+
+	'url': "http://" + document.domain + "/home.xml", 
+	
+	'onSuccess': maneggiaHome	};
 AjaxRequest.get(obi);
-};
-*/
+
+}
+
 
 /*replyTo:
  * scheda-> e' un documento DOM, la scheda a cui si intende rispondere
@@ -130,4 +149,4 @@ function build (addTo, addMe, txt, altTxt){
     addTo.appendChild(myNode);
     
     return addTo;
-}
+

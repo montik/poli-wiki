@@ -4,18 +4,18 @@ var proxy = "http://stanisci.web.cs.unibo.it/cgi-bin/pps.php5";
 //var proxy = "http://stanisci.web.cs.unibo.it/cgi-bin/pps.php5?yws_path=";
 var acds = {
 hello: function(){alert("hello bello")},
+
 dsCats: new Array("http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml",
 		  "http://ltw0807.web.cs.unibo.it/ds/catalog.xml" ,
 	          "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml"), 
 init: function(){	
 	for(var key in this.dsCats){
-	          
-                 
-                     var obi = {
-		'url': proxy + "?yws_path=" + this.dsCats[key],
-		
-		'onSuccess':	function(parametro){ 
-			 
+
+             var obi = {
+		'url': proxy,
+		'yws_path': this.dsCats[key],
+		'onError': function(){alert("ds giu");},
+		'onSuccess':function(parametro){
 			var myNode = document.importNode(parametro.responseXML.documentElement, true);
             var name = Util.getStr(myNode, ".//nome");
 			var qury = Util.getStr(myNode, ".//accesso/*[position()=1]");
@@ -24,33 +24,34 @@ init: function(){
 			pippo.setQuri(qury);	
 			pippo.setSuri(sury);
 			ds[name] = pippo;}
-};
-	
-			} //fine foreach
+						};
 	
 	AjaxRequest.get(obi);
+			} //fine foreach
+	
 		
 	}, //fine init
-query: function(qform, funz){var qstring = AjaxRequest.serializeForm(qform); //todo serve un form
-		       var arrayResp = new Array();
-		       var handle = function(par){
-	var myNode = document.importNode(par.responseXML.documentElement, true);
-	arrayResp.push(myNode);	};
-
-       var obj = {'onSuccess': funz};//altrimenti rischio di ritornare un array con non tutti i response
+query: function(qDiv, funz, efunz){
+		       var qform = divToForm(qDiv);
+		       var qstring = AjaxRequest.serializeForm(qform); //todo serve un form
 		       
-       for(var i in ds){ obj.url = proxy + "?yws_path=" + ds[i].queryUri + "?" + qstring;
-	     		 AjaxRequest.get(obj);}
+		       var obj = {'onSuccess': funz,
+				  'url' : proxy,
+				  'onError': efunz};
+		       
+       for(var i in ds){
+		 obj['yws_path'] = ds[i].queryUri + "?" + qstring;
+	     	 AjaxRequest.get(obj);}
 	},
 	
 salva: function(schedaXml, dove){ 
 	var uri = this.ds[dove].salvaUri;
 	var par = {
 //fixme capitolo aperto	'url': proxy + uri,
+			'url': proxy,
+			'yws_path': uri,
 			'onError': function(){alert("salvataggio non riuscito");},
-			'scheda': schedaXml
-			
-	};
+			'scheda': schedaXml   };
 			
 	AjaxRequest.post(par);
 }
@@ -58,84 +59,90 @@ salva: function(schedaXml, dove){
 var acdf = {
 		
 		dfref: new Array(
+		"http://ltw0802.web.cs.unibo.it/DF/catalogo.xml",
 		"http://ltw0807.web.cs.unibo.it/df/xhtml/catalog.xml",	
-		"http://ltw0807.web.cs.unibo.it/df/pdf/catalog.xml",
-		"http://ltw0802.web.cs.unibo.it/DF/catalogo.xml"),
+		"http://ltw0807.web.cs.unibo.it/df/pdf/catalog.xml"
+		),
 		
 		
 		init: function(){
 	for(key in this.dfref){
 	//parametro per la get()
 		var par = {
-'url': proxy + "?yws_path=" + this.dfref[key],
-'onSuccess': function(parametro){
-var myNode = document.importNode(parametro.responseXML.documentElement, true);//todo provare con this
-var nome = Util.getStr(myNode, "./global/@name");
-var llay = Util.getStr(myNode, "./global/@list-layout")
-var frmtDoc = Util.getStr(myNode, "./format/@*[position()=1]");
-var frmtFra = Util.getStr(myNode, "./format/@*[position()=2]");
-var pdata = Util.getStr(myNode, "./format/@posted-data");
-//controllo tag speciali
-var set = document.evaluate("./format/specials/*", myNode, null, XPathResult.ANY_TYPE, null);
-var n = set.iterateNext();
-if(n) var spro = new Array();
-while(n){
-	spro.push(n.nodeName);
-	n = set.iterateNext();
-		}
-var dfist = new DF(nome);	
-dfist.setSpec(spro); //todo debuggarlo
-dfist.setLayoUri(llay);
-dfist.setPdata(pdata);
-dfist.setDformUri(frmtFra);
-dfist.setFformUri(frmtDoc);
-df[nome] = dfist;
-clearTimeout(t);
-} //fine dichiarazione funzione onSuccess
-	}; // fine oggetto da passare alla get
+	'url': proxy,
+	'yws_path': this.dfref[key],
+	'onSuccess': function(parametro){
+		var myNode = document.importNode(parametro.responseXML.documentElement, true);//todo provare con this
+		var nome = Util.getStr(myNode, "./global/@name");
+		var llay = Util.getStr(myNode, "./global/@list-layout")
+		var frmtDoc = Util.getStr(myNode, './format/@*[starts-with(name(.), "doc")]'); //pos = 2
+		var frmtFra = Util.getStr(myNode, './format/@*[starts-with(name(.), "frag")]'); // pos = 1
+		var pdata = Util.getStr(myNode, "./format/@posted-data");
+	//controllo tag speciali
+	var set = document.evaluate("./format/specials/*", myNode, null, XPathResult.ANY_TYPE, null);
+	var n = set.iterateNext();
+	if(n) var spro = new Array();
+		while(n){
+			spro.push(n.nodeName);
+			n = set.iterateNext();
+				}
+	var dfist = new DF(nome);	
+	dfist.setSpec(spro); //todo debuggarlo
+	dfist.setLayoUri(llay);
+	dfist.setPdata(pdata);
+	dfist.setDformUri(frmtDoc);
+	dfist.setFformUri(frmtFra);
+	df[nome] = dfist;
+	clearTimeout(t);
+	dfup();
+		} //fine dichiarazione funzione onSuccess
+			}; // fine oggetto da passare alla get
 		AjaxRequest.get(par);
-		}//fine perOgni
+	}//fine perOgni
 	
 },//fine init().
 		// funzione che aggiorna la lista dei layout di un df, TODO chiamare anche in fase di init
-		update: function(dfname){
-var layUpdateUri = df[dfname].layoutUri; //url da querare per ricevere elenco layouts/skin
-var parobj = {		
-'url': proxy + "?yws_path=" + layUpdateUri,
-//setta la lista di skins e la lista di layouts
-//del DF dfname
-'onSuccess': function(parametro){
-		var myNode = document.importNode(parametro.responseXML.documentElement, true);
-		var laydomlist = document.evaluate("layout", myNode, null, XPathResult.ANY_TYPE, null);
-		function proc(domlist){	
-			var n = domlist.iterateNext();
+update: function(dfname){
+
+	var layUpdateUri = df[dfname].layoutUri; //url da querare per ricevere elenco layouts/skin
+	var parobj = {		
+	'url': proxy,
+	'yws_path': layUpdateUri,
+
+	//setta la lista di skins e la lista di layouts
+	//del DF dfname
+	'onSuccess': function(parametro){
+				var myNode = document.importNode(parametro.responseXML.documentElement, true);
+				var laydomlist = document.evaluate("layout", myNode, null, XPathResult.ANY_TYPE, null);
+				function proc(domlist){	
+					var n = domlist.iterateNext();
 	
-		while(n){	
+					while(n){	
 			
-			var layNome = Util.getStr(n, "./@id");
-			if(n.getElementsByTagName("skin").length > 0){
-			var skidomlist = document.evaluate("skin", n, null, XPathResult.ANY_TYPE, null); 
-			var inner = new Array();
-			s = skidomlist.iterateNext();
-			while(s){
+						var layNome = Util.getStr(n, "./@id");
+						if(n.getElementsByTagName("skin").length > 0){
+							var skidomlist = document.evaluate("skin", n, null, XPathResult.ANY_TYPE, null); 
+							var inner = new Array();
+							s = skidomlist.iterateNext();
+						while(s){
+			
+							var skiNome = Util.getStr(s, "./@id");
+							inner.push(skiNome);
+							s = skidomlist.iterateNext();
+										}
+					outer[layNome] = inner;
+								}
+						else outer[laynome];
+						n = domlist.iterateNext();}
+			
+				}//fine proc (interna di onSuccess)
+			
 	
-	var skiNome = Util.getStr(s, "./@id");
-	inner.push(skiNome);
-			s = skidomlist.iterateNext();
-		}
-			outer[layNome] = inner;
-			}
-			else outer[laynome];
-			n = domlist.iterateNext();}
-			
-			}//fine proc (interna di onSuccess)
-			
-	
-			var outer = new Array(); //contiene la lista di tutti i ly relativi al DF
-			proc(laydomlist);
-			df[dfname].setLayout(outer);
-	} //fine function onSuccess di update()			
-	}; // fine costruzione oggetto parametro
+				var outer = new Array(); //contiene la lista di tutti i ly relativi al DF
+				proc(laydomlist);
+				df[dfname].setLayout(outer);
+								} //fine function onSuccess di update()			
+						}; // fine costruzione oggetto parametro
 AjaxRequest.get(parobj);
 			
 	},//fine dichiarazione metodo update().
@@ -156,7 +163,8 @@ var parobj = {
 	AjaxRequest.post(parobj);
 			},
 formatDoc: function(doc, dove, funz){
-		
+
+DFCORR = dove;		
 var uri = df[dove].dformUri;
 	
 //creo il parametro per la post()

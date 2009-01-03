@@ -28,7 +28,6 @@
  */
 function AjaxRequest() {
 	var req = new Object();
-	var pippo = "pluto";
 	
 	// -------------------
 	// Instance properties
@@ -516,7 +515,7 @@ AjaxRequest.serializeForm = function(theform) {
 		};
 	for (var i=0; i<len; i++) {
 		var el = els[i];
-		if (!el.disabled) {
+		if (!el.disabled && (el.value != "")) {
 			switch(el.type) {
 				case 'text': case 'password': case 'hidden': case 'textarea': 
 					this.addField(el.name,el.value);

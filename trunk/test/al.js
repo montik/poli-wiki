@@ -1,12 +1,82 @@
 // l'idea e' di tenere in questo file
 // solo le funzioni di onsuccess e onerror
-function getHome(){
-var layout = randLay(DFCORR);
-var skin = randSkin(DFCORR, layout);
 
+
+
+//questa funzione entra in gioco quando si effettua una ricerca in caso di successo
+//succ rappresenta il reponseXML
+function queryBuona(succ){
+//adesso devo impacchettare una bella richiesta di formattazione
+// innanzitutto mi congelo il response in una variabilina
+var rsp = doc.createElement('response');
+//var iRsp = succ.responseXML.importNode(rsp, true);
+var iRsp = doc.importNode(succ.responseXML.documentElement, true);
+var a = doc.evaluate('*', iRsp, null, XPathResult.ANY_TYPE, null);
+compose(rsp, '.', a);
+
+//var olResp = succ.responseXML.documentElement;
+//olResp.parentNode.replaceChild(iRsp, olResp);
+/*
+var s = carica(PGNCORR);
+var ss = s.importNode(respi, true);
+compose(s, 'dati', [ss]);
+PGNCORR = serializza(s);*/
+// adesso creo l'alberino formatta con i layout+skin correnti
+
+var tronchetto = acdf.assem(l, s, true); //si ricorda che l ed s sono variabili globali dichiarate in utilogic.js
+compose(tronchetto, 'dati', [rsp]); //..
+// adesso non mi resta che inoltrare la richiesta al formatter 
+// e in caso di successo modificare il dom della pagina corrente
+var alberino = serializza(tronchetto);
+
+//questa funzione aggiunge ogni response in fondo alla pagina
+//ossia aggiunge un figlio al div cornice
+
+function aggResp(xmlresp, rand){
+//controllo se la pagina gia contiene dei response
+//se si li elimino
+
+rdiv.setAttribute('id', 'rdiv');
+var r = xmlresp.responseXML.getElementById("response");
+var rr = document.importNode(r, true);
+var x = document.getElementById('rdiv');
+var y = x.getAttribute('nid');
+
+if(x && (y != rand)) //esiste e lo sostituisco
+{
+
+var rdiv = document.createElement('div');
+var z = '' + Math.random() + '';
+var nid = z.substring(2);
+rdiv.setAttribute('nid', nid);
+rdiv.appendChild(rr);
+x.parentNode.replaceChild(rdiv, x);
+}
+else //devo appendere responses all'rdiv che c'era
+{
+x.appendChild(rr);
+
+}
+//parte riservata al backup su PGNCORR
+
+//compose(document, '//*[@id="cornice"]', [rr]);
+var cornice = document.getElementById('cornice');
+cornice.appendChild(rr);
+}
+
+
+
+acdf.formatFrag(alberino, DFCORR, aggResp);
+}
+
+
+function gethome(){
+var layout = randLay(DFCORR);
+l = layout;
+var skin = randSkin(DFCORR, layout);
+s = skin;
 if(!skin || !layout) return;
 clearInterval(gh);
-
 function maneggiaHome(rec){
 		var appendi = doc.importNode(rec.responseXML.documentElement, true); //dom della home
 		var tronco = acdf.assem(layout, skin);
@@ -18,17 +88,17 @@ function maneggiaHome(rec){
 		// lista delle skin
 		var opzioni = doc.createElement("opzioni");
 		opzioni.appendChild(stiListGen(df));
-<<<<<<< .mine
 
 		//logo
 		var logo = doc.createElement("logo");
-		var img = doc.createElement("img"); img.setAttribute("src", "http://i210.photobucket.com/albums/bb51/pindeonthenet/richardbenson3.jpg");
+		var img = doc.createElement("img"); img.setAttribute("src", logoUrl);
 		logo.appendChild(img);
 
 		var figli = new Array(appendi, opzioni, logo);
 		compose(tronco, "dati/speciali", figli); //qui ho il dom della home da mandare al formatto
-		PGNCORR = tronco.getElementsByTagName("dati").item(0).cloneNode(true);
+		PGNCORR = serializza(tronco.getElementsByTagName("dati").item(0));
 		var xml = serializza(tronco);
+
 		acdf.formatDoc(xml, DFCORR, gambizza); //gambizza e' una funzione che sostitutisce l'html corrente
 		
 							}
@@ -149,4 +219,4 @@ function build (addTo, addMe, txt, altTxt){
     addTo.appendChild(myNode);
     
     return addTo;
-
+}

@@ -32,7 +32,7 @@ init: function(){
 		
 	}, //fine init
 query: function(qDiv, funz, efunz){
-		       var qform = divToForm(qDiv);
+		       var qform = divToForm(qDiv.parentNode);
 		       var qstring = AjaxRequest.serializeForm(qform); //todo serve un form
 		       
 		       var obj = {'onSuccess': funz,
@@ -201,30 +201,31 @@ AjaxRequest.post(parobj);
 	df = df.replace(regex, "documento");}
 	
 	//costruzione della radice
-	var fdoc = document.implementation.createDocument(null,null,null);
-	var formatta = fdoc.createElementNS(df, "df:formatta");
+//	var fdoc = document.implementation.createDocument(null,null,null);
+//	doc.figlicidio();
+	var formatta = doc.createElementNS(df, "df:formatta");
 	formatta.setAttribute("xmlns:etw", etw);	
 	formatta.setAttribute("xmlns:p", p);		
 	formatta.setAttribute("xmlns:p1", p1);	
 	formatta.setAttribute("xmlns:p9", p9);	
 	formatta.setAttribute("xmlns:xsi", xsi);	
 	formatta.setAttribute("xmlns:schemaLocation", sl);	
-	var info = fdoc.createElement("info");
+	var info = doc.createElement("info");
 	formatta.appendChild(info);
 	//cosfuntruzione nodo layout al quale appendere il nodo
 	//attributo ID
-	var layout = fdoc.createElement("layout");
+	var layout = doc.createElement("layout");
 	layout.setAttribute("id", lay);
 	info.appendChild(layout);
 	
 	if(skin) {
-		  var skinnode = fdoc.createElement("skin");
+		  var skinnode = doc.createElement("skin");
 		  skinnode.setAttribute("id", skin);
 		  info.appendChild(skinnode);
 		  }
 	//fine prima parte dell'albero
 		
-var dati = fdoc.createElement("dati");
+var dati = doc.createElement("dati");
 formatta.appendChild(dati);
 return formatta;
 		}

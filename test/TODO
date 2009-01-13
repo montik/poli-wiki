@@ -18,7 +18,6 @@ pw.html -> tiragiu(home.xml) -> homeManeggio() -> home.html
 
 -i vari rispondi() scrivi() //edo
 -onSuccess di query
--cercare di togliere innerHTML
 -problema con la ricezione del link al pdf con Tigella, la formattazione comunque va a buon fine
 # Nella mia intenzione questo file servirebbe per tenere traccia di che cosa va fatto e 
 # di chi se ne sta occupando.

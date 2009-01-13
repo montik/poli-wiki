@@ -6,9 +6,13 @@ function serializza(node)
 	    else throw "errore nella serializzazione " + node; 
 	};
 
-
-
-
+function carica(stringa)
+	{
+	//todo cross-browsing
+	var p = new DOMParser();
+	var d = p.parseFromString(stringa, "text/xml");
+	return d;
+	}
 
 /*
 * classe che rappresenta l'oggetto DS
@@ -99,9 +103,10 @@ function serializza(node)
 
 
 
-		var srad = contextNode.ownerDocument.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext(); //sotto-radice, ev.nte da sostituire
+		var srad = contextNode.ownerDocument.evaluate(xpathExpr, contextNode, null, XPathResult.ANY_TYPE, null).iterateNext(); 
+		//sotto-radice, ev.nte da sostituire
 
-		if(sub){ //caso di sostituzione
+		if(sub){ //caso di sostituzione, non va con iteratori
 			
 			if(listaNodi2.length != 1){
 			
@@ -118,7 +123,9 @@ function serializza(node)
 
 		else{
 
-for(var i=0; i<listaNodi2.length; i++)
+var x = listaNodi2.length;
+
+for(var i=0; i<x; i++)
 {
    var figlio = listaNodi2[i];
    srad.appendChild(figlio);

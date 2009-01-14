@@ -1,3 +1,10 @@
+function casuale(){
+
+var z = '' + Math.random() + '';
+var caso = z.substring(2);
+return caso;
+	}
+
 function serializza(node)
 	{
 	    if (typeof XMLSerializer != "undefined") 

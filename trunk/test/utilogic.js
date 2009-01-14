@@ -1,4 +1,5 @@
 //qui vi sono le variabili globali Logic
+var nuovoNid;
 var PGNCORR; //xml corrente
 var DFCORR; //data formatter di corrente
 var DSCORR; //data source di corrente
@@ -6,8 +7,7 @@ var s; //skin corrente
 var l; //layout corrente
 var doc = document.implementation.createDocument(null, null, null);//sforna nodi xml
 var logoUrl = "http://i210.photobucket.com/albums/bb51/pindeonthenet/richardbenson3.jpg"; //richy ben
-//var logoUri = 'http://www.myjewishlearning.com/culture/Humor/DefiningHumor/WesternWit/Simpsons_files/image004.jpg'; //krusty
-//
+
 // prende una lista di coppie (nomeDellAttributoName, descrizione)
 // ritorn un array, facile da usare con compose(..)
 function formGen(lista, padre){

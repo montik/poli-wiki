@@ -17,11 +17,17 @@ pw.html -> tiragiu(home.xml) -> homeManeggio() -> home.html
 
 
 -i vari rispondi() scrivi() //edo
--onSuccess di query
+
+
+
 -problema con la ricezione del link al pdf con Tigella, la formattazione comunque va a buon fine
+
 # Nella mia intenzione questo file servirebbe per tenere traccia di che cosa va fatto e 
 # di chi se ne sta occupando.
  
 1) replyTo(scheda, reply){} -> edo
 	verificare comportamento con browser diversi da FF3.
 	gestire correttamente(?) le folksonomie
+
+2) 
+-onSuccess di query (non visualizzare responses vuoti + aggiunta di qualche onclick qua e la) -> marcello

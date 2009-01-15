@@ -1,5 +1,6 @@
 //qui vi sono le variabili globali Logic
-var nuovoNid;
+var queryLock;
+var nuovoNid; // il nuovo numero casuale generato dalla query che sara' title del div della nuova ricerca
 var PGNCORR; //xml corrente
 var DFCORR; //data formatter di corrente
 var DSCORR; //data source di corrente
@@ -7,6 +8,34 @@ var s; //skin corrente
 var l; //layout corrente
 var doc = document.implementation.createDocument(null, null, null);//sforna nodi xml
 var logoUrl = "http://i210.photobucket.com/albums/bb51/pindeonthenet/richardbenson3.jpg"; //richy ben
+
+//funzione forse inutile che controlla se la ricerca ha prodotto
+//qualche risultato
+function siono(){
+//debugger;
+if(!AjaxRequest.isActive()){
+clearInterval(queryLock);
+var divo = document.getElementById('rdiv');
+var nid = divo.getAttribute('title');
+var flagg = divo.childNodes.length;
+
+if(nid != nuovoNid)
+{ 
+//TODO qui si deve rimpiazzare
+var P = document.createElement('p');
+P.textContent = casuale();
+//debugger;
+//for each (var z in divo.childNodes) divo.removeChild(z);
+divo.appendChild(P);		}
+
+	}
+
+else return;
+
+
+}
+
+
 
 // prende una lista di coppie (nomeDellAttributoName, descrizione)
 // ritorn un array, facile da usare con compose(..)

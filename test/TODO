@@ -30,4 +30,4 @@ pw.html -> tiragiu(home.xml) -> homeManeggio() -> home.html
 	gestire correttamente(?) le folksonomie
 
 2) 
--onSuccess di query (non visualizzare responses vuoti + aggiunta di qualche onclick qua e la) -> marcello
+-onSuccess di query (aggiunta di qualche onclick qua e la, LEGGI in siono()) -> marcello

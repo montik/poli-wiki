@@ -8,7 +8,10 @@
 function queryBuona(succ){
 //adesso devo impacchettare una bella richiesta di formattazione
 // innanzitutto mi congelo il response in una variabilina
-var rsp = doc.createElement('response');
+// controllo se c'e' almeno un risultato
+var xx = succ.responseXML.getElementsByTagName('metadati')[0];
+if(!xx) return;
+var rsp = doc.createElement('response'); //serve a poter mandare la richiesta.Con le dichiarazioni di NS il DF non validava
 //var iRsp = succ.responseXML.importNode(rsp, true);
 var iRsp = doc.importNode(succ.responseXML.documentElement, true);
 var a = doc.evaluate('*', iRsp, null, XPathResult.ANY_TYPE, null);
@@ -22,24 +25,21 @@ compose(tronchetto, 'dati', [rsp]); //..
 var alberino = serializza(tronchetto);
 
 function aggResp(xmlres){
-//controllo se la pagina gia contiene dei response
-//se si li elimino
+
 var r = xmlres.responseXML.getElementById("response");
-debugger;
+var junk = r.getElementsByTagName('h1')[0];
+if(typeof(junk) != 'undefined') r.removeChild(junk);
 var rr = document.importNode(r, true);
 var k = document.getElementById('rdiv');
 var vecchioNid = k.getAttribute('title');
 
 
-//se il nodo non esisteva o esisteva ma
-//con nid diverso e' il caso di entrare
-if(nuovoNid != vecchioNid)
+if(nuovoNid != vecchioNid) //e' una nuova ricerca, quindi rimpiazzo
 {
-
 var rdiv = document.createElement('div');
 rdiv.setAttribute('id', 'rdiv');
 rdiv.setAttribute('title', nuovoNid);
-var testa = document.createElement('H1');
+var testa = document.createElement('h2');
 testa.textContent = 'La gente dice:';
 rdiv.appendChild(testa);
 rdiv.appendChild(rr);

@@ -32,6 +32,7 @@ init: function(){
 		
 	}, //fine init
 query: function(qDiv, funz, efunz){
+		       queryLock = setInterval('siono()', 500);
 		       nuovoNid = casuale(); //id di ogni query. sara' letto da aggResp(..)
 		       var qform = divToForm(qDiv.parentNode);
 		       var qstring = AjaxRequest.serializeForm(qform); //todo serve un form

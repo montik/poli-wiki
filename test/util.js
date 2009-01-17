@@ -162,7 +162,7 @@ for(var i=0; i<x; i++)
 			}
 		
 		else*/ var newxp = xpathExpr;
-		var str = document.evaluate(newxp, contextNode, null, XPathResult.ANY_TYPE, null);
+		var str = contextNode.ownerDocument.evaluate(newxp, contextNode, null, XPathResult.ANY_TYPE, null);
 		//var str = document.evaluate(newxp, contextNode, null, XPathResult.STRING_TYPE, null);
 		var ciccio =  str.iterateNext().textContent;
 		return ciccio;

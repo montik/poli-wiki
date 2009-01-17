@@ -22,11 +22,11 @@ var flagg = divo.childNodes.length;
 if(nid != nuovoNid)
 { 
 //TODO qui si deve rimpiazzare
-var P = document.createElement('p');
-P.textContent = casuale();
+var H1 = document.createElement('h3');
+H1.textContent = 'La Ricerca Non Ha Prodotto Risultati';
 //debugger;
 //for each (var z in divo.childNodes) divo.removeChild(z);
-divo.appendChild(P);		}
+divo.appendChild(H1);		}
 
 	}
 
@@ -67,10 +67,6 @@ compose(tronchetto, "dati", appendi, true);
 var xml = serializza(tronchetto);
 
 acdf.formatDoc(xml, addo, gambizza);	}
-
-function figlicidio(){ //funziona solo con doc
-
-doc.removeChild(doc.documentElement);}
 
 //genera al volo una lista profonda con le skin ecc ecc
 function stiListGen(dfArray){
@@ -133,7 +129,7 @@ piuFolk.textContent = "+Folk";
 
 //creo il bottone di submit
 var sbutton = pgncaricato.createElement("button");
-sbutton.setAttribute("onclick", "acds.query(this, queryBuona)");
+sbutton.setAttribute("onclick", "acds.fquery(this, queryBuona)");
 sbutton.textContent = "Cerca";
 var arrayForm = formGen(lista, pgncaricato);
 arrayForm.push(divf, piuFolk, sbutton);
@@ -251,12 +247,10 @@ return false;
 
 
 function dfCorr(){
-
 for(var a in df) if(a) {clearInterval(dfc); DFCORR = a; return;}
 };
 
 function dsCorr(){
-
 for(var a in ds) if(a) {clearInterval(dsc); DSCORR = a; return;}
 };
 

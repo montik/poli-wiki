@@ -31,18 +31,23 @@ init: function(){
 	
 		
 	}, //fine init
-query: function(qDiv, funz, efunz){
-		       queryLock = setInterval('siono()', 500);
-		       nuovoNid = casuale(); //id di ogni query. sara' letto da aggResp(..)
-		       var qform = divToForm(qDiv.parentNode);
-		       var qstring = AjaxRequest.serializeForm(qform); //todo serve un form
-		       
-		       var obj = {'onSuccess': funz,
-				  'url' : proxy,
-				  'onError': efunz};
+fquery: function(qDiv, funz, efunz){
+       var qform = divToForm(qDiv.parentNode);
+       var qstring = AjaxRequest.serializeForm(qform); //todo serve un form
+       acds.query(qstring, funz, efunz);	
+},
+
+query: function(qStr, funz, efunz){
+
+       queryLock = setInterval('siono()', 500);
+       nuovoNid = casuale(); //id di ogni query. sara' letto da aggResp(..)
+       
+       var obj = {'onSuccess': funz,
+		  'url' : proxy,
+		  'onError': efunz};
 		       
        for(var i in ds){
-		 obj['yws_path'] = ds[i].queryUri + "?" + qstring;
+		 obj['yws_path'] = ds[i].queryUri + "?" + qStr;
 	     	 AjaxRequest.get(obj);}
 	},
 	

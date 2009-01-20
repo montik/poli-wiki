@@ -171,7 +171,7 @@ var parobj = {
 			},
 formatDoc: function(doc, dove, funz){
 
-DFCORR = dove;		
+//DFCORR = dove;		
 var uri = df[dove].dformUri;
 	
 //creo il parametro per la post()

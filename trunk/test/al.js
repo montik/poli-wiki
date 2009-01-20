@@ -1,12 +1,77 @@
-// l'idea e' di tenere in questo file
+// 260 sezione post
+//// l'idea e' di tenere in questo file
 // solo le funzioni di onsuccess e onerror
 
 //sara' invocata da onclick su eidentifier
 //scheda e' un uri
-//function chiedoScheda(scheda) {
+function chiedoScheda(scheda) { //scheda e' il response xml con la scheda
+//cio che si deve fare e':
+//1 aggiustare PGNCORR
+//2 creare un nuovo rdiv per rimpiazzare il vecchio nella pagina corrente
+//2a aggiungere un bottone per fare risposte.
+//3formattare il frammento
+//appenderlo al nuovo rdiv e appenderlo infine alla pagina
+var ch = carica(PGNCORR);
+var mt = ch.createElement('scheda'); //altremineti non vailda con tutti i NS
+var aq = ch.importNode(scheda.responseXML.documentElement, true);
 
 
-//} //con innerfunction che formatta
+//aggiusto tutto senza NS
+var pz = ch.evaluate('*', aq, null, XPathResult.ANY_TYPE, null);
+compose(mt, '.', pz);
+
+//gli elimino (a PGNCORR) tutti i figli response precedenti
+var pe = ch.getElementsByTagName('response');
+for(var te=0; te<pe.length; te++){
+pe[te].parentNode.removeChild(pe[te]);}
+
+
+//antepongo scheda a speciali (in PGNCORR) pena la non validazione
+var cb = ch.getElementsByTagName('speciali')[0];
+cb.parentNode.insertBefore(mt, cb);
+
+
+//costruzione dell'albero formatta
+var le = acdf.assem(l, s, true);
+var rm = doc.importNode(mt, true);
+
+compose(le, 'dati', [rm]); 
+//significa che prendo l'elemento dati direttamente da PGNCORR
+
+PGNCORR = serializza(ch);
+
+
+var ta = serializza(le);
+acdf.formatFrag(ta, DFCORR, gambizza);
+	}
+
+function maneggioscheda(dagambizza, intero){
+//debugger;
+// fase 2.
+// this.parentNode e' rdiv, cartaEpenna dovra' aggiustarlo con un bel textarea piu inputtini vari, piu un pulsante di conferma
+var ba = dagambizza.ownerDocument.createElement('button');
+ba.setAttribute('onclick', 'javascript:alert("e l\'anno successivoo..")');
+//ba.setAttribute('onclick', 'cartaEpenna(this.parentNode, false)');
+ba.setAttribute('class', 'marcatore-poliwiki');
+ba.textContent = 'intervieni';
+
+if(intero) return [dagambizza, ba]; //per fare la sostituzione dell'intero documento (lo fa gambizza())
+
+//in questo caso procedo con la sostituzione del solo frammento
+var is = document.getElementById('rdiv');
+var fg = is.cloneNode(false); //nuovo rdiv ma con stesso nid (document)
+
+//appendo il documento all rdiv (rimpiazzando il vecchio)
+var br = document.importNode(dagambizza, true);
+fg.appendChild(br);
+//creo il bottone di risposta
+var sa = document.importNode(ba, true);
+fg.appendChild(sa);
+is.parentNode.replaceChild(fg, is);
+
+}
+
+
 //questa funzione entra in gioco quando si effettua una ricerca in caso di successo
 //succ rappresenta il reponseXML
 function queryBuona(succ){
@@ -40,8 +105,9 @@ g[www].setAttribute("onclick", onclick);
 var b = ['folksonomia', 'edate', 'ecreator'];
 for(var o=0; o<b.length; o++) clickQuery(b[o]);
 var urino = getStr(rsp, './/eidentifier');
-var etit = rsp.getElementsByTagName('etitle')[0];
-etit.setAttribute("onclick", "AjaxRequest.get({url: \'" + proxy + "?yws_path=" + urino + "\', onSuccess: chiedoScheda})");
+var etit = rsp.getElementsByTagName('etitle');
+for(var lt=0; lt<etit.length; lt++)
+etit[lt].setAttribute("onclick", "AjaxRequest.get({url: \'" + proxy + "?yws_path=" + urino + "\', onSuccess: chiedoScheda})");
 // adesso creo l'alberino formatta con i layout+skin correnti
 var tronchetto = acdf.assem(l, s, true); //si ricorda che l ed s sono variabili globali dichiarate in utilogic.js
 compose(tronchetto, 'dati', [rsp]); //..
@@ -58,10 +124,12 @@ var rr = document.importNode(r, true);
 var k = document.getElementById('rdiv');
 var vecchioNid = k.getAttribute('title');
 
-debugger;
 var as = carica(PGNCORR);
 var xyz = as.importNode(rsp, true);
 var spc = as.getElementsByTagName("speciali")[0];
+var lady = as.evaluate('//*[@id="rdiv"]', as.documentElement, null, XPathResult.ANY_TYPE, null).iterateNext();
+lady.parentNode.replaceChild(lady.cloneNode(false), lady);
+
 if(nuovoNid != vecchioNid) //e' una nuova ricerca, quindi rimpiazzo
 {
 var qwe = as.getElementsByTagName('response');
@@ -129,7 +197,10 @@ AjaxRequest.get(obi);
 
 }
 
-/*
+// scheda: il dom della scheda a cui si sta rispondendo
+// reply: il div 'corpo' della risposta
+// option: un array con un po di valori a muzzo
+
 function replyTo (scheda, reply, option){
 
     //variabili prese da myNode
@@ -191,5 +262,43 @@ compose(addTo, NomeTxtDove[e].dove, [nd]);
 }
 
     return addTo;
-    			}*/
-    
+    			}
+   //////////////////////////////////
+   //sezione dedicata alle funzioni//
+   //postatrici//////////////////////
+
+//funzione che deve modificare sia il dom della pagina
+//per creare un ambientino per scrivere, sia il PGNCORR
+//per il cambio di skin, prende in input rdiv, cioe'
+//la cornicetta che contiene(eva) la scheda appena letta.
+
+function cartaEpenna(scrivania, nuowork){
+debugger;
+// per prima cosa devo generare l'insieme
+// di inputs e textarea da appendere a
+// scrivania.
+
+var dc = [
+
+{'name': 'ecreator', 'descr': 'autore'}
+
+];
+
+var ri = formGen(dc, doc);
+
+var na = document.createElement('textarea');
+ri.push(document.createElement('br'), na);
+
+var ce = document.getElementById('rdiv');
+var av = ce.cloneNode(false);
+compose(av, '.', ri);
+
+ce.parentNode.replaceChild(av, ce);
+
+
+
+
+
+}
+
+

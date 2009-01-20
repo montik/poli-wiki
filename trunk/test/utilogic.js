@@ -3,6 +3,7 @@ var queryLock;
 var nuovoNid; // il nuovo numero casuale generato dalla query che sara' title del div della nuova ricerca
 var PGNCORR; //xml corrente
 var DFCORR; //data formatter di corrente
+var DFPREC; //usato in caso di pdf
 var DSCORR; //data source di corrente
 var s; //skin corrente
 var l; //layout corrente
@@ -12,7 +13,6 @@ var logoUrl = "http://i210.photobucket.com/albums/bb51/pindeonthenet/richardbens
 //funzione forse inutile che controlla se la ricerca ha prodotto
 //qualche risultato
 function siono(){
-//debugger;
 if(!AjaxRequest.isActive()){
 clearInterval(queryLock);
 var divo = document.getElementById('rdiv');
@@ -23,10 +23,21 @@ if(nid != nuovoNid)
 { 
 //TODO qui si deve rimpiazzare
 var H1 = document.createElement('h3');
-H1.textContent = 'La Ricerca Non Ha Prodotto Risultati';
+H1.textContent = Date() + ': La Ricerca Non Ha Prodotto Risultati';
+var pidgeon = carica(PGNCORR);
+var qwe = pidgeon.getElementsByTagName("response");
+if(qwe.length) for(var rty=0; rty<qwe.length; rty++) qwe[rty].parentNode.removeChild(qwe[rty]);
+
+var pirdic = pidgeon.evaluate('//*[@id="rdiv"]', pidgeon.documentElement, null, XPathResult.ANY_TYPE, null).iterateNext();
+var pirdiclo = pirdic.cloneNode(false);
+pirdiclo.appendChild(H1);
+compose(pidgeon.documentElement, '//*[@id="rdiv"]', [pirdiclo], true);
+PGNCORR = serializza(pidgeon);
 //debugger;
 //for each (var z in divo.childNodes) divo.removeChild(z);
-divo.appendChild(H1);		}
+var ildivo = divo.cloneNode(false);
+ildivo.appendChild(H1);
+divo.parentNode.replaceChild(ildivo, divo);	}
 
 	}
 
@@ -38,7 +49,7 @@ else return;
 
 
 // prende una lista di coppie (nomeDellAttributoName, descrizione)
-// ritorn un array, facile da usare con compose(..)
+// ritorna un array, facile da usare con compose(..)
 function formGen(lista, padre){
 
 var a = new Array();
@@ -58,6 +69,9 @@ return a;	};
 function cambiapelle(la, sk, addo){
 l = la;
 s = sk;
+if(addo == "Tigella") {DFPREC = DFCORR;}
+DFCORR = addo;
+
 var tronchetto = acdf.assem(la, sk);
 
 //caricare l'xml
@@ -102,8 +116,7 @@ return ulEst;
 
 
 function piuCriteri(node){
-
-
+//debugger;// FIXME non funziona dopo Tigella
 var lista = [
 
 	{'name': "wcreator", 'descr': "autore del work"},
@@ -176,8 +189,30 @@ compose(PGNCORR, 'speciali/miv[@id="boxino"]', dummy, true)
 
 //sostituisce l'html attuale con uno nuovo
 function gambizza(domtot){
-var idomdot = document.importNode(domtot.responseXML.documentElement, true);
-document.replaceChild(idomdot, document.documentElement);}
+//todo controllio di Tigella
+if(DFCORR == 'Tigella') {DFCORR = DFPREC; var pdf = window.open(); pdf.location.assign(domtot.responseText); return;}
+var foresp = domtot.responseXML.documentElement; //response formattato
+var neres = foresp.ownerDocument.evaluate('count(//*[@id="response"])', foresp, null, XPathResult.ANY_TYPE, null).numberValue;
+if(neres){
+var eres = foresp.ownerDocument.evaluate('//*[@id="response"]', foresp, null, XPathResult.ANY_TYPE, null);
+compose(foresp, '//*[@id="rdiv"]', eres);
+}
+else { //controllo se si tratta di scheda
+//var neres = foresp.ownerDocument.evaluate('count(//*[@id="scheda"])', foresp, null, XPathResult.ANY_TYPE, null).numberValue;
+var neres = foresp.ownerDocument.getElementById('scheda');
+if(neres){ 
+var docOfra = domtot.parameters.yws_path;
+var fr = /fra[gm]ment/;
+if(fr.exec(docOfra)){
+maneggioscheda(neres, false); return;}
+
+else compose(foresp, '//*[@id="rdiv"]', maneggioscheda(neres, true));
+}
+		} 
+var linux = document.importNode(foresp, true);
+document.replaceChild(linux, document.documentElement);
+
+		}
 
 
 

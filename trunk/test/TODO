@@ -1,26 +1,6 @@
-il debugger sta solo in cambiaPelle() @ utilogic
-
-
-
-
-
-
-Come funziona:
-la prima pagina che l'utente riceve e' pw.html da dove
-vengono importate le varie librerie.E' anche il 'main'.
-
-Tira giu la home.xml e la gira subito al DF di default,
-alla fine di questa comunicazione la home viene
-visualizzata da homeManeggio().
-
-pw.html -> tiragiu(home.xml) -> homeManeggio() -> home.html
-
-
--i vari rispondi() scrivi() //edo
--il loop infinito di siono dopo una ricerca fruttuosa
-
-
--problema con la ricezione del link al pdf con Tigella, la formattazione comunque va a buon fine
+-todino: pulsante Rispondi scompare dopo cambio skin visualizzando documenti.
+-todino: stack delle variabili di setInterval in fase di query pena il richiamo infinito di siono()
+quando si clicca 2 volte velocemente su ricerche infruttuose
 
 # Nella mia intenzione questo file servirebbe per tenere traccia di che cosa va fatto e 
 # di chi se ne sta occupando.
@@ -30,4 +10,4 @@ pw.html -> tiragiu(home.xml) -> homeManeggio() -> home.html
 	gestire correttamente(?) le folksonomie
 
 2) 
--onSuccess di query (aggiunta di qualche onclick qua e la, LEGGI in siono()) -> marcello
+

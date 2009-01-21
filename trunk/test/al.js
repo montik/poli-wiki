@@ -19,7 +19,6 @@ var aq = ch.importNode(scheda.responseXML.documentElement, true);
 //aggiusto tutto senza NS
 var pz = ch.evaluate('*', aq, null, XPathResult.ANY_TYPE, null);
 compose(mt, '.', pz);
-
 //gli elimino (a PGNCORR) tutti i figli response precedenti
 var pe = ch.getElementsByTagName('response');
 for(var te=0; te<pe.length; te++){
@@ -34,7 +33,7 @@ cb.parentNode.insertBefore(mt, cb);
 //costruzione dell'albero formatta
 var le = acdf.assem(l, s, true);
 var rm = doc.importNode(mt, true);
-
+SCHEDA = rm;
 compose(le, 'dati', [rm]); 
 //significa che prendo l'elemento dati direttamente da PGNCORR
 
@@ -46,16 +45,15 @@ acdf.formatFrag(ta, DFCORR, gambizza);
 	}
 
 function maneggioscheda(dagambizza, intero){
-//debugger;
 // fase 2.
 // this.parentNode e' rdiv, cartaEpenna dovra' aggiustarlo con un bel textarea piu inputtini vari, piu un pulsante di conferma
-var ba = dagambizza.ownerDocument.createElement('button');
-ba.setAttribute('onclick', 'javascript:alert("e l\'anno successivoo..")');
+var ba = document.createElement('button');
+ba.setAttribute('onclick', 'cartaEpenna(false)');
 //ba.setAttribute('onclick', 'cartaEpenna(this.parentNode, false)');
-ba.setAttribute('class', 'marcatore-poliwiki');
+//ba.setAttribute('class', 'marcatore-poliwiki');
 ba.textContent = 'intervieni';
 
-if(intero) return [dagambizza, ba]; //per fare la sostituzione dell'intero documento (lo fa gambizza())
+if(intero) return [dagambizza, doc.importNode(ba, true)]; //per fare la sostituzione dell'intero documento (lo fa gambizza())
 
 //in questo caso procedo con la sostituzione del solo frammento
 var is = document.getElementById('rdiv');
@@ -64,9 +62,10 @@ var fg = is.cloneNode(false); //nuovo rdiv ma con stesso nid (document)
 //appendo il documento all rdiv (rimpiazzando il vecchio)
 var br = document.importNode(dagambizza, true);
 fg.appendChild(br);
+fg.appendChild(ba);
 //creo il bottone di risposta
-var sa = document.importNode(ba, true);
-fg.appendChild(sa);
+//var sa = document.importNode(ba, true);
+//fg.appendChild(sa);
 is.parentNode.replaceChild(fg, is);
 
 }
@@ -203,35 +202,54 @@ AjaxRequest.get(obi);
 
 function replyTo (scheda, reply, option){
 
-    //variabili prese da myNode
-    var schedaSource = Util.getStr(scheda, "//eidentifier"); //sara' esource del documento appena creato
-    
-	var schedaWork = myNode.getElementsByTagName("work")[0];  // va bene cosi' com e'
+   //scheda = false -> nuovo work 
+	if(!scheda){	//genero io il meta/work
+		var cn = [
+			
+		   {nome: "widentifier", val: '0', dove:"."}
+		  ,{nome: "wcreator", val: option.ecreator, dove:"."}
+		  ,{nome: "wcoverage", val: '2009', dove:"."}
+		  ,{nome: "wtitle", val: option.etitle, dove:"."}
+		  ,{nome: "wdate", val: '1984-05-24T07:30:00:00', dove:"."}
+				
+							];
+		 var schedaWork = doc.createElement('work');		
+		 var schedaSource = 'http://inter.net'
+		 build(cn, schedaWork);
+
+					}
+	else {
+	var schedaWork = scheda.getElementsByTagName("work")[0];  // va bene cosi' com e'
+	var schedaSource = Util.getStr(scheda, "//eidentifier"); //sara' esource del documento appena creato
+    }
 	var expression = doc.createElement("expression");
   
     //costruisco l'XML per l'expression della risposta
-	var ppp = [ {nome: "ecreator", val: option.ecreator, dove: "//expression"}
-		, {nome: "edescription", val: option.edescription, dove: "//expression"}
-		, {nome: "elanguage", val: option.elanguage, dove: "//expression"}
-		, {nome: "erelation", val: schedaRelation, dove: "//expression"}
-		, {nome: "esource", val: schedaSource, dove: "//expression"}
-		, {nome: "epublisher", val: "x", dove: "//expression"}	
-		, {nome: "etitle", val: option.etitle, dove: "//expression"}
-		, {nome: "etype", val: "risposta", dove: "//expression"}];
+	var ppp = [
+		  {nome: "eidentifier", val: 'http://eidentifi.er', dove:"."}
+		, {nome: "ecreator", val: option.ecreator, dove: "."}
+		, {nome: "edate", val: "1984-05-24T07:30:00:00", dove:"."}
+		, {nome: "edescription", val: option.edescription, dove: "."}
+		, {nome: "elanguage", val: 'it', dove: "."} //si potrebbe cambiare
+		, {nome: "erelation", val: schedaSource, dove: "."}
+		, {nome: "esource", val: schedaSource, dove: "."}
+		, {nome: "epublisher", val: "x", dove: "."}	
+		, {nome: "esubject", val: "", dove: "."}	
+		, {nome: "etitle", val: option.etitle, dove: "."}
+		, {nome: "etype", val: "risposta", dove: "."}
 
-    //se non specificato, mette il titolo della scheda cui si risponde
-	
-	//genero esubject con le folksonomie 
+];
 
-	if (option.esubject){
-		var para = new Array({nome: "esubject", val: "", dove: "//expression"});
 
-		for (var x in option.esubject)
-			para.push({nome: "folksonomia", val: option.esubject[x], dove: "//expression"});
+
+
+		build(ppp, expression);
+		var para = new Array();
+		for (var x in option.esubject) //conterra' delle stringhette semplici
+			para.push({nome: "folksonomia", val: option.esubject[x], dove: "//esubject"});
 			
-			build(para, expression);
-	}
-	
+			build(para, expression); //ora ho metadati/expression pronto
+
 	var toRet      = doc.createElement("scheda");
 	var metadati   = doc.createElement("metadati");
 	var body       = doc.createElement("body");
@@ -244,15 +262,10 @@ function replyTo (scheda, reply, option){
 	toRet.appendChild(metadati);
 	toRet.appendChild(body);
 	
-	//TODO definire completamente il namespace
-	//toRet.setAttribute("xmlns:ds","http://ltw.web.cs.unibo.it/esempio");
-	
-	//console.info(toRet); //DEBUG
-	return toRet;	
+	return toRet;
 }
 
 function build(NomeTxtDove, addTo){
-
 for(var e=0; e<NomeTxtDove.length; e++){
 
 var nd = doc.createElement(NomeTxtDove[e].nome);
@@ -269,25 +282,43 @@ compose(addTo, NomeTxtDove[e].dove, [nd]);
 
 //funzione che deve modificare sia il dom della pagina
 //per creare un ambientino per scrivere, sia il PGNCORR
-//per il cambio di skin, prende in input rdiv, cioe'
-//la cornicetta che contiene(eva) la scheda appena letta.
-
-function cartaEpenna(scrivania, nuowork){
-debugger;
+//nuowork=true indica un nuovo work
+function cartaEpenna(nuowork){
 // per prima cosa devo generare l'insieme
-// di inputs e textarea da appendere a
+// di inputs e textara da appendere a
 // scrivania.
 
 var dc = [
-
-{'name': 'ecreator', 'descr': 'autore'}
-
+{'name': 'ecreator', 'descr': 'autore'},
+{'name': 'etitle', 'descr': 'titolo'},
 ];
 
-var ri = formGen(dc, doc);
+var sp = [{'name': 'folksonomia', 'descr': ''}]; //metterlo nel div col bottone repliMe
 
+var sv = document.createElement('div');
+sv.appendChild(formGen(sp, document)[0]);
+sv.appendChild(document.createTextNode('argomento'));
+
+var to = document.createElement('button'); to.setAttribute('onclick', 'duplifolk(this)');
+to.textContent = '+';
+
+var ri = formGen(dc, document);
+
+var pg = document.createElement('textarea'); //edescription
+pg.setAttribute('raws', 5);
+pg.setAttribute('cols', 25);
+pg.setAttribute('name', 'edescription');
+pg.textContent = "";
 var na = document.createElement('textarea');
-ri.push(document.createElement('br'), na);
+na.setAttribute('raws', 30);
+na.setAttribute('cols', 50);
+na.textContent = 'scrivi il tuo articolo!';
+if(nuowork)
+{var pubblica = document.createElement('button'); pubblica.setAttribute('onclick', 'pubblica(false)');}
+else {var pubblica = document.createElement('button'); pubblica.setAttribute('onclick', 'pubblica(true)');}
+// quando pubblica entrera' in azione avro' rdiv in PGNCORR da ripulire!!! FIXME FIXME
+pubblica.textContent = 'Pubblica';
+ri.push(sv, to, document.createElement('br'), pg, document.createTextNode('piccola descrizione'), document.createElement('br'), na, pubblica);
 
 var ce = document.getElementById('rdiv');
 var av = ce.cloneNode(false);
@@ -295,10 +326,98 @@ compose(av, '.', ri);
 
 ce.parentNode.replaceChild(av, ce);
 
+// adesso devo 'backup-are' il tutto su PGNCORR
+// tutto il malloppone si trova in av
+var rc = carica(PGNCORR);
+var pa = rc.createElement('div');
+pa.setAttribute('id', 'rdiv');
+pa.setAttribute('title', av.getAttribute('title')); 
+var kr = rc.importNode(av, true);
+var me = kr.childNodes;
+
+for(var tr=0; tr<me.length; tr++)
+{
+//qui mi trovo costretto a ricreare ogni elemento perche' altrimenti non verra' visualizzato (uppercase??)
+// non posso avere elementi profondi qua
+var nome = me[tr].nodeName;
+var valore = me[tr].textContent;
+
+if(nome == '#text') {var rg = rc.createTextNode('');}
+else var rg = rc.createElement(nome.toLowerCase());
+
+if(me[tr].hasAttributes())
+{var en = me[tr].attributes;
+ for(var tp=0; tp<en.length; tp++) 
+rg.setAttribute(en[tp].name, en[tp].value);}
+
+rg.textContent = valore;
+pa.appendChild(rg);
+}
 
 
+//elimino la precedente scheda
+var vv = rc.documentElement.getElementsByTagName('scheda')[0];
+vv.parentNode.removeChild(vv);
+compose(rc.documentElement, '//*[@id="rdiv"]', [pa], true);
+PGNCORR = serializza(rc);
+}
 
+
+//woe = false -> nuovo work => chiamare replyTo(false, body, questeOptions)
+function pubblica(woe){
+// carico la scheda a cui voglio rispondere
+// quando sara' nuovo work saro io a generare meta/work
+if(woe) //caso nuovo work
+var pt = SCHEDA;
+else var pt = false;
+
+// ora devo costruire l'oggetto option con i vari parametrini
+var fi = document.getElementById('rdiv').getElementsByTagName('input'); //poi sara' la volta dei textarea
+var ar = {};
+var im = {}; //folk
+
+// il turno dei textarea, un buon design vorrebbe una funzione
+var lu = document.getElementById('rdiv').getElementsByTagName('textarea'); //poi sara' la volta dei textarea
+
+
+//non credo serva un commento
+function ms(po){
+for(var si=0; si<po.length; si++){
+
+var gr = po[si].name; // il nome dubli core
+var li = po[si].value;
+
+if(gr != 'folksonomia') ar[gr] = li;
+else im[si] = li;
+
+			}
 
 }
+ms(fi);
+ar.esubject = im;
+ar[lu[0].name] = lu[0].value; // edescription
+			
+// adesso che ho il mio array di valori posso
+// chiamare la replyTo che mi costriusce il
+// documento da mandare al ds
+var ge =  replyTo(pt, lu[1], ar); //qui adesso posso quasi pensare al salvataggio
+debugger;
+
+// finito la formattazione, ora si tratta di capire dove salvare il documento
+// e come manipolare l'output del DS
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

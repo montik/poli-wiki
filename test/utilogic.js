@@ -2,6 +2,7 @@
 var queryLock;
 var nuovoNid; // il nuovo numero casuale generato dalla query che sara' title del div della nuova ricerca
 var PGNCORR; //xml corrente
+var SCHEDA; // ultima scheda vista in DOM
 var DFCORR; //data formatter di corrente
 var DFPREC; //usato in caso di pdf
 var DSCORR; //data source di corrente

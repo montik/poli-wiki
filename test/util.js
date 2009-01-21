@@ -31,22 +31,11 @@ function carica(stringa)
 	function DS(n){
 
 		this.nome = n;
-
+		this.setCata = function(s){this.cata = s;} //url del catalogo
 		this.setQuri = function(s){this.queryUri = s;}
 		this.setSuri = function(s){this.salvaUri = s;}
 }
 
-
-/*miniclasse che rappresenta una coppia layout-skin FIXME classe quasi deprecata!!!
- * con skin non obbligatorio
-
-	function LaySkin(n){
-	this.layout = n; //vale anche da nome
-	
-	this.setSkin = function(s) {this.skin = s;}
-	
-	}
-*/
 
 
 /* classe che rappresenta l'oggetto DF,

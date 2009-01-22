@@ -6,6 +6,7 @@ var SCHEDA; // ultima scheda vista in DOM
 var DFCORR; //data formatter di corrente
 var DFPREC; //usato in caso di pdf
 var DSCORR; //data source di corrente
+var MIODS = 'Rupert_S';
 var s; //skin corrente
 var l; //layout corrente
 var doc = document.implementation.createDocument(null, null, null);//sforna nodi xml
@@ -34,8 +35,6 @@ var pirdiclo = pirdic.cloneNode(false);
 pirdiclo.appendChild(H1);
 compose(pidgeon.documentElement, '//*[@id="rdiv"]', [pirdiclo], true);
 PGNCORR = serializza(pidgeon);
-//debugger;
-//for each (var z in divo.childNodes) divo.removeChild(z);
 var ildivo = divo.cloneNode(false);
 ildivo.appendChild(H1);
 divo.parentNode.replaceChild(ildivo, divo);	}
@@ -117,7 +116,7 @@ return ulEst;
 
 
 function piuCriteri(node){
-//debugger;// FIXME non funziona dopo Tigella
+//fixme non funziona dopo Tigella
 var lista = [
 
 	{'name': "wcreator", 'descr': "autore del work"},
@@ -290,6 +289,19 @@ function dsCorr(){
 for(var a in ds) if(a) {clearInterval(dsc); DSCORR = a; return;}
 };
 
+function salvaTorno(go){
+//TODO attenzione si deve pulire il PGNCORR dal formino per postare
+debugger;
+var pn = 'Salvataggio Corretto: ' + go.responseXML.documentElement.getElementByTagName('risposta')[0].textContent; //nuovo uri
+var ts = doc.createElement('h4');
+ts.textContent = pn;
+
+var ud = carica(PGNCORR);
+var bg = ud.getElementById('rdiv');
 
 
 
+
+
+
+} //onsuccess di salva

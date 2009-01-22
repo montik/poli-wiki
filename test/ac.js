@@ -5,7 +5,8 @@ var proxy = "http://stanisci.web.cs.unibo.it/cgi-bin/pps.php5";
 var acds = {
 hello: function(){alert("hello bello")},
 
-dsCats: new Array("http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml",
+dsCats: new Array(//"http://monticel.web.cs.unibo.it/xml/catalogoDS.xml",
+		  "http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml",
 		  "http://ltw0807.web.cs.unibo.it/ds/catalog.xml" ,
 	          "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml"), 
 init: function(){	
@@ -53,10 +54,10 @@ query: function(qStr, funz, efunz){
 	     	 AjaxRequest.get(obj);}
 	},
 	
-salva: function(schedaXml, dove){ 
-	var uri = this.ds[dove].salvaUri;
+salva: function(schedaXml, dove, at){ 
+	var uri = ds[dove].salvaUri;
 	var par = {
-//fixme capitolo aperto	'url': proxy + uri,
+			'onSuccess': at,
 			'url': proxy,
 			'yws_path': uri,
 			'onError': function(){alert("salvataggio non riuscito");},

@@ -34,6 +34,7 @@ cb.parentNode.insertBefore(mt, cb);
 var le = acdf.assem(l, s, true);
 var rm = doc.importNode(mt, true);
 SCHEDA = rm;
+DSCORR = getStr(rm, '//epublisher');
 compose(le, 'dati', [rm]); 
 //significa che prendo l'elemento dati direttamente da PGNCORR
 
@@ -210,7 +211,7 @@ function replyTo (scheda, reply, option){
 		  ,{nome: "wcreator", val: option.ecreator, dove:"."}
 		  ,{nome: "wcoverage", val: '2009', dove:"."}
 		  ,{nome: "wtitle", val: option.etitle, dove:"."}
-		  ,{nome: "wdate", val: '1984-05-24T07:30:00:00', dove:"."}
+		  ,{nome: "wdate", val: '2001-05-24T07:30:00:00', dove:"."}
 				
 							];
 		 var schedaWork = doc.createElement('work');		
@@ -226,15 +227,16 @@ function replyTo (scheda, reply, option){
   
     //costruisco l'XML per l'expression della risposta
 	var ppp = [
-		  {nome: "eidentifier", val: 'http://eidentifi.er', dove:"."}
+		  {nome: "eidentifier", val: 0, dove:"."}
 		, {nome: "ecreator", val: option.ecreator, dove: "."}
-		, {nome: "edate", val: "1984-05-24T07:30:00:00", dove:"."}
+		, {nome: "econtributor", val: "aggiustare qua!", dove: "."}
+		, {nome: "edate", val: "2001-05-24T07:30:00", dove:"."}
 		, {nome: "edescription", val: option.edescription, dove: "."}
 		, {nome: "elanguage", val: 'it', dove: "."} //si potrebbe cambiare
-		, {nome: "erelation", val: schedaSource, dove: "."}
+		, {nome: "erelation", val: 'undefined', dove: "."}
 		, {nome: "esource", val: schedaSource, dove: "."}
-		, {nome: "epublisher", val: "x", dove: "."}	
-		, {nome: "esubject", val: "", dove: "."}	
+		, {nome: "epublisher", val: 0, dove: "."}	
+		, {nome: "esubject", val: null, dove: "."}	
 		, {nome: "etitle", val: option.etitle, dove: "."}
 		, {nome: "etype", val: "risposta", dove: "."}
 
@@ -250,11 +252,17 @@ function replyTo (scheda, reply, option){
 			
 			build(para, expression); //ora ho metadati/expression pronto
 
-	var toRet      = doc.createElement("scheda");
+	var toRet = doc.createElementNS('http://ltw.web.cs.unibo.it/esempio', "ds:scheda");
+	toRet.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+	toRet.setAttribute('xsi:schemaLocation', 'http://ltw.web.cs.unibo.it/esempio http://vitali.web.cs.unibo.it/twiki/pub/TechWeb08/PagSchemaDS/schedaSchema.xsd');
+	toRet.setAttribute('xmlns:bo', 'http://www.w3.org/1999/xhtml');
 	var metadati   = doc.createElement("metadati");
 	var body       = doc.createElement("body");
-	
-	body.appendChild(reply);
+	var mi = doc.createElement('div');
+	var co = doc.createElement('p');
+	co.textContent = reply.textContent
+	mi.appendChild(co);
+	body.appendChild(mi);
 	metadati.appendChild(schedaWork);
 	metadati.appendChild(expression);
 	
@@ -314,8 +322,8 @@ na.setAttribute('raws', 30);
 na.setAttribute('cols', 50);
 na.textContent = 'scrivi il tuo articolo!';
 if(nuowork)
-{var pubblica = document.createElement('button'); pubblica.setAttribute('onclick', 'pubblica(false)');}
-else {var pubblica = document.createElement('button'); pubblica.setAttribute('onclick', 'pubblica(true)');}
+{var pubblica = document.createElement('button'); pubblica.setAttribute('onclick', 'pubblica(false, MIODS)');}
+else {var pubblica = document.createElement('button'); pubblica.setAttribute('onclick', 'pubblica(true, DSCORR)');}
 // quando pubblica entrera' in azione avro' rdiv in PGNCORR da ripulire!!! FIXME FIXME
 pubblica.textContent = 'Pubblica';
 ri.push(sv, to, document.createElement('br'), pg, document.createTextNode('piccola descrizione'), document.createElement('br'), na, pubblica);
@@ -364,12 +372,29 @@ PGNCORR = serializza(rc);
 
 
 //woe = false -> nuovo work => chiamare replyTo(false, body, questeOptions)
-function pubblica(woe){
+function pubblica(woe, vb){
 // carico la scheda a cui voglio rispondere
 // quando sara' nuovo work saro io a generare meta/work
-if(woe) //caso nuovo work
+
+if(!woe){ //caso nuovo work
+var pt = false; //sara' _scheda_ nella chiamata a replyTo
+var bi = MIODS;}
+//ora devo vedere quale' il nome del DS corrente
+else{
 var pt = SCHEDA;
-else var pt = false;
+for(var vc in ds){
+
+var no = new RegExp(vb, 'i');
+if(no.exec(vc)) var bi = vc;
+else if(no.exec(ds[vc].cata)) var bi=vc;
+		
+				}
+
+if(typeof(bi) == 'undefined') var bi = MIODS;
+				
+				}
+
+
 
 // ora devo costruire l'oggetto option con i vari parametrini
 var fi = document.getElementById('rdiv').getElementsByTagName('input'); //poi sara' la volta dei textarea
@@ -401,10 +426,14 @@ ar[lu[0].name] = lu[0].value; // edescription
 // chiamare la replyTo che mi costriusce il
 // documento da mandare al ds
 var ge =  replyTo(pt, lu[1], ar); //qui adesso posso quasi pensare al salvataggio
-debugger;
+var lmx = serializza(ge);
+acds.salva(lmx, bi, salvaTorno);
 
-// finito la formattazione, ora si tratta di capire dove salvare il documento
-// e come manipolare l'output del DS
+//ora si tratta che devo definire la onsuccess di acds.salva e magari la onerror
+
+
+
+
 	}
 
 

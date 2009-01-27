@@ -1,4 +1,6 @@
--todino: pulsante Rispondi scompare dopo cambio skin visualizzando documenti.
+
+-todino: settaggio data?
+
 -todino: stack delle variabili di setInterval in fase di query pena il richiamo infinito di siono()
 quando si clicca 2 volte velocemente su ricerche infruttuose
 

@@ -5,7 +5,7 @@ var proxy = "http://stanisci.web.cs.unibo.it/cgi-bin/pps.php5";
 var acds = {
 hello: function(){alert("hello bello")},
 
-dsCats: new Array(//"http://monticel.web.cs.unibo.it/xml/catalogoDS.xml",
+dsCats: new Array("http://monticel.web.cs.unibo.it/xml/catalogoDS.xml",
 		  "http://mtotaro.web.cs.unibo.it/xml/catalogo_ds.xml",
 		  "http://ltw0807.web.cs.unibo.it/ds/catalog.xml" ,
 	          "http://ltw0802.web.cs.unibo.it/DS/catalogo.xml"), 

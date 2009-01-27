@@ -282,7 +282,7 @@ return false;
 
 
 function dfCorr(){
-for(var a in df) if(a) {clearInterval(dfc); DFCORR = a; return;}
+for(var a in df) if(a && a != "Tigella") {clearInterval(dfc); DFCORR = a; return;}
 };
 
 function dsCorr(){
@@ -291,13 +291,25 @@ for(var a in ds) if(a) {clearInterval(dsc); DSCORR = a; return;}
 
 function salvaTorno(go){
 //TODO attenzione si deve pulire il PGNCORR dal formino per postare
-debugger;
-var pn = 'Salvataggio Corretto: ' + go.responseXML.documentElement.getElementByTagName('risposta')[0].textContent; //nuovo uri
-var ts = doc.createElement('h4');
-ts.textContent = pn;
+var pn = 'Salvataggio Corretto: ' + go.responseXML.documentElement.textContent; //nuovo uri
+
 
 var ud = carica(PGNCORR);
-var bg = ud.getElementById('rdiv');
+var ts = ud.createElement('H2');
+ts.textContent = pn;
+var bg = ud.evaluate('//div[@id="rdiv"]', ud.documentElement, null, XPathResult.ANY_TYPE, null).iterateNext();
+var co = bg.cloneNode(false);
+co.appendChild(ts);
+bg.parentNode.replaceChild(co, bg); //sostituito in PGNCORR
+PGNCORR = serializza(ud);
+debugger;
+var mi = document.getElementById('rdiv');
+var br = mi.cloneNode(false);
+var lo = document.createElement('H2');
+lo.textContent = pn;
+br.appendChild(lo);
+
+mi.parentNode.replaceChild(br, mi);
 
 
 

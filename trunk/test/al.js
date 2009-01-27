@@ -211,7 +211,7 @@ function replyTo (scheda, reply, option){
 		  ,{nome: "wcreator", val: option.ecreator, dove:"."}
 		  ,{nome: "wcoverage", val: '2009', dove:"."}
 		  ,{nome: "wtitle", val: option.etitle, dove:"."}
-		  ,{nome: "wdate", val: '2001-05-24T07:30:00:00', dove:"."}
+		  ,{nome: "wdate", val: '2001-05-24T07:30:00', dove:"."}
 				
 							];
 		 var schedaWork = doc.createElement('work');		
@@ -260,7 +260,7 @@ function replyTo (scheda, reply, option){
 	var body       = doc.createElement("body");
 	var mi = doc.createElement('div');
 	var co = doc.createElement('p');
-	co.textContent = reply.textContent
+	co.textContent = reply.value;
 	mi.appendChild(co);
 	body.appendChild(mi);
 	metadati.appendChild(schedaWork);
@@ -365,6 +365,7 @@ pa.appendChild(rg);
 
 //elimino la precedente scheda
 var vv = rc.documentElement.getElementsByTagName('scheda')[0];
+if(vv)
 vv.parentNode.removeChild(vv);
 compose(rc.documentElement, '//*[@id="rdiv"]', [pa], true);
 PGNCORR = serializza(rc);
@@ -435,18 +436,3 @@ acds.salva(lmx, bi, salvaTorno);
 
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -19,6 +19,8 @@ var aq = ch.importNode(scheda.responseXML.documentElement, true);
 //aggiusto tutto senza NS
 var pz = ch.evaluate('*', aq, null, XPathResult.ANY_TYPE, null);
 compose(mt, '.', pz);
+var b = ['folksonomia', 'edate', 'ecreator'];
+//for(var ao=0; ao<b.length; ao++) clickQuery(mt, b[ao]);
 //gli elimino (a PGNCORR) tutti i figli response precedenti
 var pe = ch.getElementsByTagName('response');
 for(var te=0; te<pe.length; te++){
@@ -43,7 +45,7 @@ PGNCORR = serializza(ch);
 
 var ta = serializza(le);
 acdf.formatFrag(ta, DFCORR, gambizza);
-	}
+}
 
 function maneggioscheda(dagambizza, intero){
 // fase 2.
@@ -71,10 +73,23 @@ is.parentNode.replaceChild(fg, is);
 
 }
 
+function clickQuery(cqRsp, aa){ 
+var g = cqRsp.getElementsByTagName(aa);
+//questo loop deve estrarre valori e settare
+//i vari onclick con una funzione che usa questo valore
+for(var www=0; www<g.length; www++) //ora www contiene Element
+{//TODO TODO super debug
+var val = g[www].textContent;
+var onclick = "acds.query(\'" + aa + "=" + val + "\', queryBuona)";
+g[www].setAttribute("onclick", onclick);
+}
+}
+
 
 //questa funzione entra in gioco quando si effettua una ricerca in caso di successo
 //succ rappresenta il reponseXML
 function queryBuona(succ){
+
 //adesso devo impacchettare una bella richiesta di formattazione
 // innanzitutto mi congelo il response in una variabilina
 // controllo se c'e' almeno un risultato
@@ -89,28 +104,25 @@ compose(rsp, '.', a);
 //aggiusta i vari onclick dei vari elementi di response
 //elencati in aa
 
-function clickQuery(aa){ 
-var g = rsp.getElementsByTagName(aa);
-//questo loop deve estrarre valori e settare
-//i vari onclick con una funzione che usa questo valore
-for(var www=0; www<g.length; www++) //ora www contiene Element
-{//TODO TODO super debug
-var val = g[www].textContent;
-var onclick = "acds.query(\'" + aa + "=" + val + "\', queryBuona)";
-g[www].setAttribute("onclick", onclick);
-	}
 
-}
+
 // arrangiamento con i vari onclick
 var b = ['folksonomia', 'edate', 'ecreator'];
-for(var o=0; o<b.length; o++) clickQuery(b[o]);
+for(var o=0; o<b.length; o++) clickQuery(rsp, b[o]);
 var urino = getStr(rsp, './/eidentifier');
 var etit = rsp.getElementsByTagName('etitle');
+
+
 for(var lt=0; lt<etit.length; lt++)
 etit[lt].setAttribute("onclick", "AjaxRequest.get({url: \'" + proxy + "?yws_path=" + urino + "\', onSuccess: chiedoScheda})");
+
+
+
 // adesso creo l'alberino formatta con i layout+skin correnti
 var tronchetto = acdf.assem(l, s, true); //si ricorda che l ed s sono variabili globali dichiarate in utilogic.js
 compose(tronchetto, 'dati', [rsp]); //..
+
+
 // adesso non mi resta che inoltrare la richiesta al formatter 
 // e in caso di successo modificare il dom della pagina corrente
 var alberino = serializza(tronchetto);
@@ -119,7 +131,10 @@ function aggResp(xmlres){
 
 var r = xmlres.responseXML.getElementById("response");
 var junk = r.getElementsByTagName('h1')[0];
+
+
 if(typeof(junk) != 'undefined') r.removeChild(junk);
+
 var rr = document.importNode(r, true);
 var k = document.getElementById('rdiv');
 var vecchioNid = k.getAttribute('title');
@@ -127,8 +142,10 @@ var vecchioNid = k.getAttribute('title');
 var as = carica(PGNCORR);
 var xyz = as.importNode(rsp, true);
 var spc = as.getElementsByTagName("speciali")[0];
+
+
 var lady = as.evaluate('//*[@id="rdiv"]', as.documentElement, null, XPathResult.ANY_TYPE, null).iterateNext();
-lady.parentNode.replaceChild(lady.cloneNode(false), lady);
+lady.parentNode.replaceChild(lady.cloneNode(false), lady); //svuoto rdiv
 
 if(nuovoNid != vecchioNid) //e' una nuova ricerca, quindi rimpiazzo
 {
@@ -147,13 +164,14 @@ k.parentNode.replaceChild(rdiv, k);
 }
 else k.appendChild(rr);//k lo leggo dall ambiente di queryBuona, altrimenti significa che non capisco quando leggo
 
+
 spc.parentNode.insertBefore(xyz, spc);
 PGNCORR = serializza(as);
-	
-	}
+
+}
 acdf.formatFrag(alberino, DFCORR, aggResp);
 
-		}
+	}
 
 function gethome(){
 var layout = randLay(DFCORR);
@@ -163,44 +181,65 @@ s = skin;
 if(!skin || !layout) return;
 clearInterval(gh);
 function maneggiaHome(rec){
-		var appendi = doc.importNode(rec.responseXML.documentElement, true); //dom della home
-		var tronco = acdf.assem(layout, skin);
+	var appendi = doc.importNode(rec.responseXML.documentElement, true); //dom della home
+	var tronco = acdf.assem(layout, skin);
 //		figlicidio();	
-		var speciali = doc.createElement("speciali");	
-		var ee = new Array(speciali);
-		compose(tronco, "dati", ee);
-		
-		// lista delle skin
-		var opzioni = doc.createElement("opzioni");
-		opzioni.appendChild(stiListGen(df));
+	var speciali = doc.createElement("speciali");	
+	var ee = new Array(speciali);
+	compose(tronco, "dati", ee);
+	
+	// lista delle skin
+	var opzioni = doc.createElement("opzioni");
+	opzioni.appendChild(stiListGen(df));
 
-		//logo
-		var logo = doc.createElement("logo");
-		var img = doc.createElement("img"); img.setAttribute("src", logoUrl);
-		logo.appendChild(img);
+	//logo
+	var logo = doc.createElement("logo");
+	var img = doc.createElement("img"); img.setAttribute("src", logoUrl);
+	logo.appendChild(img);
 
 
-		var figli = new Array(appendi, opzioni, logo);
-		compose(tronco, "dati/speciali", figli); //qui ho il dom della home da mandare al formatto
-		PGNCORR = serializza(tronco.getElementsByTagName("dati").item(0));
-		var xml = serializza(tronco);
+	var figli = new Array(appendi, opzioni, logo);
+	compose(tronco, "dati/speciali", figli); //qui ho il dom della home da mandare al formatto
+	PGNCORR = serializza(tronco.getElementsByTagName("dati").item(0));
+	var xml = serializza(tronco);
 
-		acdf.formatDoc(xml, DFCORR, gambizza); //gambizza e' una funzione che sostitutisce l'html corrente
-		
-							}
+	acdf.formatDoc(xml, DFCORR, gambizza_rss); //gambizza e' una funzione che sostitutisce l'html corrente
+	
+						}
 var obi = {
 
-	'url': "http://" + document.domain + "/home.xml", 
-	
-	'onSuccess': maneggiaHome	};
+'url': "http://" + document.domain + "/home.xml", 
+'onSuccess': maneggiaHome	};
+
 AjaxRequest.get(obi);
 
 }
 
+function gambizza_rss(home_resp){
+gambizza(home_resp);
+
+function reader(feed){
+// convertitore
+var z = new XSLTProcessor();
+var a = carica(rss_html);
+z.importStylesheet(a);
+
+var newfeed = z.transformToFragment(feed.responseXML, document);
+document.getElementById('rdiv').appendChild(newfeed);}
+
+var o = {'url': proxy, 'yws_path': corriere, 'onSuccess': reader};
+
+AjaxRequest.get(o);
+
+
+
+}
+
+
+
 // scheda: il dom della scheda a cui si sta rispondendo
 // reply: il div 'corpo' della risposta
 // option: un array con un po di valori a muzzo
-
 function replyTo (scheda, reply, option){
 
    //scheda = false -> nuovo work 

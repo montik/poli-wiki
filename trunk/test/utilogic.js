@@ -1,4 +1,9 @@
 //qui vi sono le variabili globali Logic
+//var beccati_rss = '<script language="javascript">window.alert(33)</script>';
+var rss_html = '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wfw="http://wellformedweb.org/CommentAPI/"> <xsl:output method="html"/> <xsl:template match="/"> <xsl:apply-templates select="/rss/channel"/> </xsl:template> <xsl:template match="/rss/channel"> <h3><xsl:value-of select="title"/></h3> <p><xsl:value-of select="description"/></p> <ul> <xsl:apply-templates select="item"/> </ul> </xsl:template> <xsl:template match="/rss/channel/item"> <li> <a href="{link}" title="{substring(pubDate, 0, 11)}"><xsl:value-of select="title"/></a> <p><xsl:value-of select="description" disable-output-escaping="yes" /></p> </li> </xsl:template></xsl:stylesheet>';
+
+var corriere = "http://www.corriere.it/rss/politica.xml";
+
 var queryLock;
 var nuovoNid; // il nuovo numero casuale generato dalla query che sara' title del div della nuova ricerca
 var PGNCORR; //xml corrente
@@ -282,7 +287,7 @@ return false;
 
 
 function dfCorr(){
-for(var a in df) if(a && a != "Tigella") {clearInterval(dfc); DFCORR = a; return;}
+for(var a in df) if(a && a != "Tigella" && a != "rupert_s") {clearInterval(dfc); DFCORR = a; return;}
 };
 
 function dsCorr(){
@@ -295,6 +300,7 @@ var pn = 'Salvataggio Corretto: ' + go.responseXML.documentElement.textContent; 
 
 
 var ud = carica(PGNCORR);
+<<<<<<< .mine
 var ts = ud.createElement('H2');
 ts.textContent = pn;
 var bg = ud.evaluate('//div[@id="rdiv"]', ud.documentElement, null, XPathResult.ANY_TYPE, null).iterateNext();
@@ -302,12 +308,12 @@ var co = bg.cloneNode(false);
 co.appendChild(ts);
 bg.parentNode.replaceChild(co, bg); //sostituito in PGNCORR
 PGNCORR = serializza(ud);
-debugger;
 var mi = document.getElementById('rdiv');
 var br = mi.cloneNode(false);
 var lo = document.createElement('H2');
 lo.textContent = pn;
 br.appendChild(lo);
+
 
 mi.parentNode.replaceChild(br, mi);
 

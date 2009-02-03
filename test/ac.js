@@ -41,7 +41,6 @@ fquery: function(qDiv, funz, efunz){
 },
 
 query: function(qStr, funz, efunz){
-
        queryLock = setInterval('siono()', 500);
        nuovoNid = casuale(); //id di ogni query. sara' letto da aggResp(..)
        
@@ -69,6 +68,7 @@ salva: function(schedaXml, dove, at){
 var acdf = {
 		
 		dfref: new Array(
+		"http://oliviero.web.cs.unibo.it/catalogo_formatter.xml",
 		"http://ltw0802.web.cs.unibo.it/DF/catalogo.xml",
 		"http://ltw0807.web.cs.unibo.it/df/xhtml/catalog.xml",	
 		"http://ltw0807.web.cs.unibo.it/df/pdf/catalog.xml"

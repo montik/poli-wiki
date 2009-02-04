@@ -300,7 +300,6 @@ var pn = 'Salvataggio Corretto: ' + go.responseXML.documentElement.textContent; 
 
 
 var ud = carica(PGNCORR);
-<<<<<<< .mine
 var ts = ud.createElement('H2');
 ts.textContent = pn;
 var bg = ud.evaluate('//div[@id="rdiv"]', ud.documentElement, null, XPathResult.ANY_TYPE, null).iterateNext();
@@ -313,7 +312,6 @@ var br = mi.cloneNode(false);
 var lo = document.createElement('H2');
 lo.textContent = pn;
 br.appendChild(lo);
-
 
 mi.parentNode.replaceChild(br, mi);
 

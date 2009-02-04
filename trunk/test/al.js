@@ -45,7 +45,7 @@ PGNCORR = serializza(ch);
 
 var ta = serializza(le);
 acdf.formatFrag(ta, DFCORR, gambizza);
-}
+	}
 
 function maneggioscheda(dagambizza, intero){
 // fase 2.
@@ -82,7 +82,7 @@ for(var www=0; www<g.length; www++) //ora www contiene Element
 var val = g[www].textContent;
 var onclick = "acds.query(\'" + aa + "=" + val + "\', queryBuona)";
 g[www].setAttribute("onclick", onclick);
-}
+	}
 }
 
 
@@ -167,11 +167,11 @@ else k.appendChild(rr);//k lo leggo dall ambiente di queryBuona, altrimenti sign
 
 spc.parentNode.insertBefore(xyz, spc);
 PGNCORR = serializza(as);
-
-}
+	
+	}
 acdf.formatFrag(alberino, DFCORR, aggResp);
 
-	}
+		}
 
 function gethome(){
 var layout = randLay(DFCORR);
@@ -181,35 +181,35 @@ s = skin;
 if(!skin || !layout) return;
 clearInterval(gh);
 function maneggiaHome(rec){
-	var appendi = doc.importNode(rec.responseXML.documentElement, true); //dom della home
-	var tronco = acdf.assem(layout, skin);
+		var appendi = doc.importNode(rec.responseXML.documentElement, true); //dom della home
+		var tronco = acdf.assem(layout, skin);
 //		figlicidio();	
-	var speciali = doc.createElement("speciali");	
-	var ee = new Array(speciali);
-	compose(tronco, "dati", ee);
-	
-	// lista delle skin
-	var opzioni = doc.createElement("opzioni");
-	opzioni.appendChild(stiListGen(df));
+		var speciali = doc.createElement("speciali");	
+		var ee = new Array(speciali);
+		compose(tronco, "dati", ee);
+		
+		// lista delle skin
+		var opzioni = doc.createElement("opzioni");
+		opzioni.appendChild(stiListGen(df));
 
-	//logo
-	var logo = doc.createElement("logo");
-	var img = doc.createElement("img"); img.setAttribute("src", logoUrl);
-	logo.appendChild(img);
+		//logo
+		var logo = doc.createElement("logo");
+		var img = doc.createElement("img"); img.setAttribute("src", logoUrl);
+		logo.appendChild(img);
 
 
-	var figli = new Array(appendi, opzioni, logo);
-	compose(tronco, "dati/speciali", figli); //qui ho il dom della home da mandare al formatto
-	PGNCORR = serializza(tronco.getElementsByTagName("dati").item(0));
-	var xml = serializza(tronco);
+		var figli = new Array(appendi, opzioni, logo);
+		compose(tronco, "dati/speciali", figli); //qui ho il dom della home da mandare al formatto
+		PGNCORR = serializza(tronco.getElementsByTagName("dati").item(0));
+		var xml = serializza(tronco);
 
-	acdf.formatDoc(xml, DFCORR, gambizza_rss); //gambizza e' una funzione che sostitutisce l'html corrente
-	
-						}
+		acdf.formatDoc(xml, DFCORR, gambizza_rss); //gambizza e' una funzione che sostitutisce l'html corrente
+		
+							}
 var obi = {
 
-'url': "http://" + document.domain + "/home.xml", 
-'onSuccess': maneggiaHome	};
+	'url': "http://" + document.domain + "/home.xml", 
+	'onSuccess': maneggiaHome	};
 
 AjaxRequest.get(obi);
 
@@ -404,7 +404,6 @@ pa.appendChild(rg);
 
 //elimino la precedente scheda
 var vv = rc.documentElement.getElementsByTagName('scheda')[0];
-if(vv)
 vv.parentNode.removeChild(vv);
 compose(rc.documentElement, '//*[@id="rdiv"]', [pa], true);
 PGNCORR = serializza(rc);
@@ -475,3 +474,18 @@ acds.salva(lmx, bi, salvaTorno);
 
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,15 +1,6 @@
 
--todino: settaggio data?
 
 -todino: stack delle variabili di setInterval in fase di query pena il richiamo infinito di siono()
 quando si clicca 2 volte velocemente su ricerche infruttuose
 
-# Nella mia intenzione questo file servirebbe per tenere traccia di che cosa va fatto e 
-# di chi se ne sta occupando.
- 
-1) replyTo(scheda, reply){} -> edo
-	verificare comportamento con browser diversi da FF3.
-	gestire correttamente(?) le folksonomie
-
-2) 
-
+-aggiustare quel 'risposta a undefined' che risulta dopo che scrivi un nuovo work
